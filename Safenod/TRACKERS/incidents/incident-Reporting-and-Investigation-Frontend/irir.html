@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ===================================================
+     HEAD
+=================================================== -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Reporting and Investigation Report</title>
+    <link rel="stylesheet" href="irir.css">
+</head>
+
+<body>
+
+<!-- ===================================================
+     MAIN WRAPPER
+=================================================== -->
+<div class="irir-management" id="irirManagement">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+
+        <div class="header-left">
+            <h1 class="header-title">
+                🛡️ Incident Reporting and Investigation Report
+                <span class="star-icon">☆</span>
+            </h1>
+        </div>
+
+        <div class="header-right">
+
+            <!-- CREATE BUTTON -->
+            <button class="btn btn-create-primary" onclick="openIrirModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                Create
+            </button>
+
+            <!-- Apps Dropdown -->
+            <div class="btn-wrapper">
+                <button class="btn" onclick="toggleHeaderDropdown('appsDropdown')">Apps ▼</button>
+                <div class="header-dropdown" id="appsDropdown">
+                    <div class="header-dropdown-item" onclick="openInGoogleSheets()">📊 Open in Google Sheets</div>
+                    <div class="header-dropdown-item" onclick="openInMicrosoftExcel()">📊 Open in Microsoft Excel</div>
+                </div>
+            </div>
+
+            <!-- Share Button -->
+            <div class="btn-wrapper">
+                <button class="btn" onclick="openShareModal()">Share ▼</button>
+            </div>
+
+            <!-- Export Dropdown -->
+            <div class="btn-wrapper">
+                <button class="btn" onclick="toggleHeaderDropdown('exportDropdown')">Export ▼</button>
+                <div class="header-dropdown" id="exportDropdown">
+                    <div class="header-dropdown-item" onclick="printList()">Print list</div>
+                    <div class="header-dropdown-item" onclick="printDetails()">Print details</div>
+                    <div class="header-dropdown-divider"></div>
+                    <div class="header-dropdown-item" onclick="exportXML()">Export XML</div>
+                    <div class="header-dropdown-item" onclick="exportCSV()">Export CSV</div>
+                    <div class="header-dropdown-item" onclick="exportExcel()">Export Excel</div>
+                </div>
+            </div>
+
+            <!-- Columns Dropdown -->
+            <div class="btn-wrapper">
+                <button class="btn" onclick="toggleColumnSelector()">⚙️ Columns</button>
+                <div class="header-dropdown column-selector-dropdown" id="columnSelectorDropdown">
+                    <div class="column-selector-header">Show/Hide Columns</div>
+
+                    <!-- Part A Columns -->
+                    <div class="col-selector-group-label">Part A — Initial Incident Reporting</div>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,3)"> Accident / Incident</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,4)"> Employee Category Involved</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,5)"> Date</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,6)"> Time</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,7)"> Shift</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,8)"> Gender</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,9)"> Experience in Current Job</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,10)"> Activity: Routine / Non-Routine</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,11)"> Name of the Injured Person(s)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,12)"> Employee No.</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,13)"> Injury Type</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,14)"> Body Part Injured</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,15)"> Name of Shop where the Accident / Incident has Happened</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,16)"> Exact Location where the Accident / Incident has Happened</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,17)"> What</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,18)"> When</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,19)"> Where</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,20)"> Who</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,21)"> Which</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,22)"> How</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,23)"> Immediate Actions</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,24)"> Prepared by Frontline Supervisor / Manager (Name & Signature)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,25)"> Prepared Date (Part A)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,26)"> Work Permit or any System Followed</label>
+
+                    <!-- Part B Columns -->
+                    <div class="col-selector-group-label">Part B — Incident Investigation</div>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,27)"> Team Member Name</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,'27b')"> Team Member Designation</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,28)"> Witness Statement</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,29)"> 6M — Man</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,35)"> Why-Why Root Cause — Man</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,30)"> 6M — Machine</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,36)"> Why-Why Root Cause — Machine</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,31)"> 6M — Material</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,37)"> Why-Why Root Cause — Material</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,32)"> 6M — Method</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,38)"> Why-Why Root Cause — Method</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,33)"> 6M — Measurement</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,39)"> Why-Why Root Cause — Measurement</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,34)"> 6M — Mother Nature</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,40)"> Why-Why Root Cause — Mother Nature</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,42)"> Root Cause (Act / Condition)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,43)"> Brief of Unsafe Act / Condition</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,52)"> HIRA Study Reference</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,53)"> EAI Study Reference</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,51)"> OCP/WI Reference</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,54)"> System Corrections Responsibility</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,55)"> System Corrections Target Date</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,56)"> Prepared By (Part B)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,57)"> Prepared Date (Part B)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,58)"> Approved By Department Head (Name & Signature)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,59)"> Approved Date (Part B)</label>
+
+                    <!-- Part C Columns -->
+                    <div class="col-selector-group-label">Part C — Safety Officer</div>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,60)"> Source / Situation of Injury / Incident</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,61)"> Other Remarks</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,62)"> Date of Return to Work</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,63)"> Man-days Lost</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,64)"> Reoccurrence of Similar Accident / Incident</label>
+
+                    <!-- Part D Columns -->
+                    <div class="col-selector-group-label">Part D — Cost Impact</div>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,65)"> Cost — Man (₹)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,66)"> Cost — Machine (₹)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,67)"> Cost — Material (₹)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,68)"> Cost — Method (₹)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,69)"> Cost — Management (₹)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,70)"> Cost — Mother Nature (₹)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,71)"> Total Cost Impact (₹)</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,75)"> Target Date of Completion of Incident</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,72)"> Month Status</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,73)"> Eff. Month Date</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,74)"> EHS Verification</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,81)"> Status</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,82)"> Brief of the Unsafe Act</label>
+                </div>
+            </div>
+
+            <!-- Bell Notification -->
+            <div class="irir-bell-btn" title="Notifications">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <div class="irir-bell-dot"></div>
+            </div>
+
+            <!-- Avatar + Dropdown -->
+            <div class="irir-avatar-wrapper" id="irirAvatarWrapper">
+                <div class="irir-nav-avatar" id="irirAvatarInitials" onclick="irirToggleDropdown(event)">SU</div>
+
+                <div class="irir-avatar-dropdown" id="irirAvatarDropdown">
+
+                    <!-- User Info Header -->
+                    <div class="irir-dropdown-header">
+                        <div class="irir-dropdown-avatar">SU</div>
+                        <div class="irir-dropdown-user-info">
+                            <div class="irir-dropdown-name">Suresh Kumar</div>
+                            <div class="irir-dropdown-role">Safety Officer</div>
+                            <div class="irir-dropdown-plant">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                Unit 3 — North Plant
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="irir-dropdown-divider"></div>
+
+                    <!-- Group 1 -->
+                    <div class="irir-dropdown-group">
+                        <div class="irir-dropdown-item" onclick="irirHandleDropdown('profile')">
+                            <div class="irir-di-icon irir-di-blue">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="irir-di-content">
+                                <div class="irir-di-label">My Profile</div>
+                                <div class="irir-di-sub">View your details &amp; activity</div>
+                            </div>
+                            <div class="irir-di-arrow">›</div>
+                        </div>
+
+                        <div class="irir-dropdown-item" onclick="irirHandleDropdown('settings')">
+                            <div class="irir-di-icon irir-di-slate">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                                </svg>
+                            </div>
+                            <div class="irir-di-content">
+                                <div class="irir-di-label">Settings</div>
+                                <div class="irir-di-sub">UI &amp; notification preferences</div>
+                            </div>
+                            <div class="irir-di-arrow">›</div>
+                        </div>
+
+                        <div class="irir-dropdown-item" onclick="irirHandleDropdown('password')">
+                            <div class="irir-di-icon irir-di-violet">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                            </div>
+                            <div class="irir-di-content">
+                                <div class="irir-di-label">Change Password</div>
+                                <div class="irir-di-sub">Update your login credentials</div>
+                            </div>
+                            <div class="irir-di-arrow">›</div>
+                        </div>
+                    </div>
+
+                    <div class="irir-dropdown-divider"></div>
+
+                    <!-- Group 2 -->
+                    <div class="irir-dropdown-group">
+                        <div class="irir-dropdown-item" onclick="irirHandleDropdown('notifications')">
+                            <div class="irir-di-icon irir-di-amber">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                                </svg>
+                            </div>
+                            <div class="irir-di-content">
+                                <div class="irir-di-label">Notifications</div>
+                                <div class="irir-di-sub">View alerts &amp; updates</div>
+                            </div>
+                            <div class="irir-di-badge">3</div>
+                        </div>
+
+                        <div class="irir-dropdown-item" onclick="irirHandleDropdown('help')">
+                            <div class="irir-di-icon irir-di-teal">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                </svg>
+                            </div>
+                            <div class="irir-di-content">
+                                <div class="irir-di-label">Help &amp; Support</div>
+                                <div class="irir-di-sub">User guide &amp; contact</div>
+                            </div>
+                            <div class="irir-di-arrow">›</div>
+                        </div>
+
+                        <div class="irir-dropdown-item" onclick="irirHandleDropdown('about')">
+                            <div class="irir-di-icon irir-di-slate">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="8" x2="12" y2="12"/>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                            </div>
+                            <div class="irir-di-content">
+                                <div class="irir-di-label">About System</div>
+                                <div class="irir-di-sub">v2.4.1 — Safenod Platform</div>
+                            </div>
+                            <div class="irir-di-arrow">›</div>
+                        </div>
+                    </div>
+
+                    <div class="irir-dropdown-divider"></div>
+
+                    <!-- Logout -->
+                    <div class="irir-dropdown-group">
+                        <div class="irir-dropdown-item irir-dropdown-item-danger" onclick="irirHandleDropdown('logout')">
+                            <div class="irir-di-icon irir-di-red">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                    <polyline points="16 17 21 12 16 7"/>
+                                    <line x1="21" y1="12" x2="9" y2="12"/>
+                                </svg>
+                            </div>
+                            <div class="irir-di-content">
+                                <div class="irir-di-label">Log Out</div>
+                                <div class="irir-di-sub">End your current session</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /irir-avatar-dropdown -->
+            </div><!-- /irir-avatar-wrapper -->
+
+        </div><!-- /header-right -->
+    </div><!-- /header -->
+
+
+    <!-- ===== TOOLBAR ===== -->
+    <div class="toolbar">
+
+        <!-- Ask AI -->
+        <button class="ask-ai-btn" onclick="toggleAISearch()">Ask AI</button>
+
+        <div class="ai-search-container" id="aiSearchContainer">
+            <div class="ai-search-box">
+                <input type="text" id="aiSearchInput" placeholder="">
+                <button class="ai-go-btn" onclick="executeAISearch()">Go →</button>
+                <button class="ai-close-btn" onclick="closeAISearch()">✕</button>
+            </div>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box" id="searchSection">
+            <input type="text" placeholder="Search IRIR" onkeyup="searchTable(this.value)">
+        </div>
+
+        <!-- More Filters Dropdown -->
+        <div class="filter-wrapper">
+            <button class="btn btn-more-filters" onclick="toggleMoreFilters()">More Filters ▼</button>
+            <div class="more-filters-dropdown" id="moreFiltersDropdown">
+                <div class="more-filters-content">
+
+                    <!-- Accident / Incident Filter -->
+                    <div class="filter-menu-item"
+                        onmouseenter="showSubmenu('categorySubmenu')"
+                        onmouseleave="hideSubmenu('categorySubmenu')">
+                        <span>Accident / Incident</span>
+                        <span class="submenu-arrow">▶</span>
+                        <div class="filter-submenu" id="categorySubmenu">
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Reportable" onchange="applyMoreFilters()">
+                                <span class="badge severity-r">Reportable</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Non-reportable" onchange="applyMoreFilters()">
+                                <span class="badge severity-nr">Non-reportable</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="First Aid" onchange="applyMoreFilters()">
+                                <span class="badge severity-fa">First Aid</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Nearmiss" onchange="applyMoreFilters()">
+                                <span class="badge severity-nm">Nearmiss</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Environment" onchange="applyMoreFilters()">
+                                <span class="badge severity-env">Environment</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Fire" onchange="applyMoreFilters()">
+                                <span class="badge severity-fire">Fire</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-menu-divider"></div>
+
+                    <!-- Name of Shop Filter -->
+                    <div class="filter-menu-item"
+                        onmouseenter="showSubmenu('deptSubmenu')"
+                        onmouseleave="hideSubmenu('deptSubmenu')">
+                        <span>Name of Shop</span>
+                        <span class="submenu-arrow">▶</span>
+                        <div class="filter-submenu" id="deptSubmenu">
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Production" onchange="applyMoreFilters()">
+                                <span>Production</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Assembly" onchange="applyMoreFilters()">
+                                <span>Assembly</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Maintenance" onchange="applyMoreFilters()">
+                                <span>Maintenance</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Quality" onchange="applyMoreFilters()">
+                                <span>Quality</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Warehouse" onchange="applyMoreFilters()">
+                                <span>Warehouse</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Utility" onchange="applyMoreFilters()">
+                                <span>Utility</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Packing" onchange="applyMoreFilters()">
+                                <span>Packing</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-menu-divider"></div>
+
+                    <!-- Status Filter -->
+                    <div class="filter-menu-item"
+                        onmouseenter="showSubmenu('statusSubmenu')"
+                        onmouseleave="hideSubmenu('statusSubmenu')">
+                        <span>Status</span>
+                        <span class="submenu-arrow">▶</span>
+                        <div class="filter-submenu" id="statusSubmenu">
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Open" onchange="applyMoreFilters()">
+                                <span class="status-badge-inline status-open">Open</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Under Investigation" onchange="applyMoreFilters()">
+                                <span class="status-badge-inline status-investigation">Under Investigation</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Closed" onchange="applyMoreFilters()">
+                                <span class="status-badge-inline status-closed">Closed</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-menu-divider"></div>
+
+                    <!-- Plant Filter -->
+                    <div class="filter-menu-item"
+                        onmouseenter="showSubmenu('plantSubmenu')"
+                        onmouseleave="hideSubmenu('plantSubmenu')">
+                        <span>Plant</span>
+                        <span class="submenu-arrow">▶</span>
+                        <div class="filter-submenu" id="plantSubmenu">
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant1" onchange="applyMoreFilters()">
+                                <span>Plant1</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant2" onchange="applyMoreFilters()">
+                                <span>Plant2</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant3" onchange="applyMoreFilters()">
+                                <span>Plant3</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant4" onchange="applyMoreFilters()">
+                                <span>Plant4</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant5" onchange="applyMoreFilters()">
+                                <span>Plant5</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant6" onchange="applyMoreFilters()">
+                                <span>Plant6</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant7" onchange="applyMoreFilters()">
+                                <span>Plant7</span>
+                            </label>
+                            <label class="filter-checkbox-label">
+                                <input type="checkbox" class="filter-checkbox" value="Plant8" onchange="applyMoreFilters()">
+                                <span>Plant8</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-menu-divider"></div>
+
+                    <!-- Clear All Filters -->
+                    <div class="filter-menu-item filter-menu-action" onclick="clearAllFilters()">
+                        <span>✕ Clear All Filters</span>
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /filter-wrapper -->
+
+        <!-- Right Side Buttons -->
+        <div class="toolbar-right-buttons">
+            <button class="irir-nav-btn" onclick="openCAPATracker()">CAPA Tracker</button>
+            <button class="irir-nav-btn irir-nav-btn-dashboard" onclick="openIRIRDashboard()">IRIR Dashboard</button>
+        </div>
+
+        <!-- Status Counter -->
+        <div class="status-counter">
+            <span class="counter-item">Total: <strong id="totalCount">0</strong></span>
+            <span class="counter-item counter-ongoing">Open: <strong id="openCount">0</strong></span>
+            <span class="counter-item counter-investigation">Investigation: <strong id="investigationCount">0</strong></span>
+            <span class="counter-item counter-completed">Closed: <strong id="closedCount">0</strong></span>
+        </div>
+
+    </div><!-- /toolbar -->
+
+
+    <!-- ===== TABLE SECTION ===== -->
+    <div class="table-container" id="listView">
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🛡️</div>
+            <h3>No Incidents Reported Yet</h3>
+            <p>Click the "Create" button to add your first Incident Report</p>
+        </div>
+
+        <table id="irirTable" style="display:none;">
+            <thead>
+                <tr>
+                    <!-- Sticky Columns -->
+                    <th class="sticky-column sticky-checkbox">
+                        <input type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()">
+                    </th>
+                    <th class="sticky-column sticky-col-1">INC ID</th>
+                    <th class="sticky-column sticky-col-2">Plant</th>
+
+                    <!-- Part A -->
+                    <th data-column-index="3" class="th-parta">Accident / Incident</th>
+                    <th data-column-index="4" class="th-parta">Employee Category Involved</th>
+                    <th data-column-index="5" class="th-parta">Date</th>
+                    <th data-column-index="6" class="th-parta">Time</th>
+                    <th data-column-index="7" class="th-parta">Shift</th>
+                    <th data-column-index="8" class="th-parta">Gender</th>
+                    <th data-column-index="9" class="th-parta">Experience in Current Job</th>
+                    <th data-column-index="10" class="th-parta">Activity: Routine / Non-Routine</th>
+                    <th data-column-index="11" class="th-parta">Name of the Injured Person(s)</th>
+                    <th data-column-index="12" class="th-parta">Employee No.</th>
+                    <th data-column-index="13" class="th-parta">Injury Type</th>
+                    <th data-column-index="14" class="th-parta">Body Part Injured</th>
+                    <th data-column-index="15" class="th-parta">Name of Shop where the Accident / Incident has Happened</th>
+                    <th data-column-index="16" class="th-parta">Exact Location where the Accident / Incident has Happened</th>
+                    <th data-column-index="17" class="th-parta">What</th>
+                    <th data-column-index="18" class="th-parta">When</th>
+                    <th data-column-index="19" class="th-parta">Where</th>
+                    <th data-column-index="20" class="th-parta">Who</th>
+                    <th data-column-index="21" class="th-parta">Which</th>
+                    <th data-column-index="22" class="th-parta">How</th>
+                    <th data-column-index="23" class="th-parta">Immediate Actions</th>
+                    <th data-column-index="24" class="th-parta">Prepared by Frontline Supervisor / Manager (Name &amp; Signature)</th>
+                    <th data-column-index="25" class="th-parta">Prepared Date (Part A)</th>
+                    <th data-column-index="26" class="th-parta">Work Permit or any System Followed</th>
+
+                    <!-- Part B -->
+                    <th data-column-index="27" class="th-partb">Team Member Name</th>
+                    <th data-column-index="27b" class="th-partb">Team Member Designation</th>
+                    <th data-column-index="28" class="th-partb">Witness Statement</th>
+                    <th data-column-index="29" class="th-partb">6M — Man</th>
+                    <th data-column-index="35" class="th-partb">Why-Why Root Cause — Man</th>
+                    <th data-column-index="30" class="th-partb">6M — Machine</th>
+                    <th data-column-index="36" class="th-partb">Why-Why Root Cause — Machine</th>
+                    <th data-column-index="31" class="th-partb">6M — Material</th>
+                    <th data-column-index="37" class="th-partb">Why-Why Root Cause — Material</th>
+                    <th data-column-index="32" class="th-partb">6M — Method</th>
+                    <th data-column-index="38" class="th-partb">Why-Why Root Cause — Method</th>
+                    <th data-column-index="33" class="th-partb">6M — Measurement</th>
+                    <th data-column-index="39" class="th-partb">Why-Why Root Cause — Measurement</th>
+                    <th data-column-index="34" class="th-partb">6M — Mother Nature</th>
+                    <th data-column-index="40" class="th-partb">Why-Why Root Cause — Mother Nature</th>
+                    <th data-column-index="42" class="th-partb">Root Cause (Act / Condition)</th>
+                    <th data-column-index="43" class="th-partb">Brief of Unsafe Act / Condition</th>
+                    <th data-column-index="52" class="th-partb">HIRA Study Reference</th>
+                    <th data-column-index="53" class="th-partb">EAI Study Reference</th>
+                    <th data-column-index="51" class="th-partb">OCP/WI Reference</th>
+                    <th data-column-index="54" class="th-partb">System Corrections Responsibility</th>
+                    <th data-column-index="55" class="th-partb">System Corrections Target Date</th>
+                    <th data-column-index="56" class="th-partb">Prepared By (Part B)</th>
+                    <th data-column-index="57" class="th-partb">Prepared Date (Part B)</th>
+                    <th data-column-index="58" class="th-partb">Approved By Department Head (Name &amp; Signature)</th>
+                    <th data-column-index="59" class="th-partb">Approved Date (Part B)</th>
+
+                    <!-- Part C -->
+                    <th data-column-index="60" class="th-partc">Source / Situation of Injury / Incident</th>
+                    <th data-column-index="61" class="th-partc">Other Remarks</th>
+                    <th data-column-index="62" class="th-partc">Date of Return to Work</th>
+                    <th data-column-index="63" class="th-partc">Man-days Lost</th>
+                    <th data-column-index="64" class="th-partc">Reoccurrence of Similar Accident / Incident</th>
+
+                    <!-- Part D -->
+                    <th data-column-index="65" class="th-partd">Cost — Man (₹)</th>
+                    <th data-column-index="66" class="th-partd">Cost — Machine (₹)</th>
+                    <th data-column-index="67" class="th-partd">Cost — Material (₹)</th>
+                    <th data-column-index="68" class="th-partd">Cost — Method (₹)</th>
+                    <th data-column-index="69" class="th-partd">Cost — Management (₹)</th>
+                    <th data-column-index="70" class="th-partd">Cost — Mother Nature (₹)</th>
+                    <th data-column-index="71" class="th-partd">Total Cost Impact (₹)</th>
+                    <th data-column-index="75" class="th-partd">Target Date of Completion of Incident</th>
+                    <th data-column-index="72" class="th-partd">Month Status</th>
+                    <th data-column-index="73" class="th-partd">Eff. Month Date</th>
+                    <th data-column-index="74" class="th-partd">EHS Verification</th>
+                    <th data-column-index="81" class="th-partd">Status</th>
+                    <th data-column-index="82" class="th-partd">Brief of the Unsafe Act</th>
+                </tr>
+            </thead>
+            <tbody id="irirTableBody"></tbody>
+        </table>
+
+    </div><!-- /table-container -->
+
+
+    <!-- ===== DETAIL SIDE PANEL ===== -->
+    <div class="detail-panel-overlay" id="detailPanelOverlay" onclick="closeDetailPanel()"></div>
+    <div class="detail-side-panel" id="detailSidePanel">
+
+        <div class="detail-panel-header">
+            <h2 class="detail-panel-title" id="detailPanelTitle">Incident Details</h2>
+            <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+        </div>
+
+        <div class="detail-panel-body" id="detailPanelBody"></div>
+
+        <div class="detail-panel-footer">
+            <button class="detail-delete-btn" onclick="deleteCurrentIrir()">🗑️ Delete</button>
+            <div class="detail-footer-buttons">
+                <button class="detail-cancel-btn" onclick="closeDetailPanel()">Cancel</button>
+                <button class="detail-save-btn" onclick="saveDetailChanges()">Save</button>
+            </div>
+        </div>
+
+    </div><!-- /detail-side-panel -->
+
+</div><!-- /irir-management -->
+
+
+<!-- ===================================================
+     SHARE MODAL
+=================================================== -->
+<div class="modal-overlay" id="shareModal" onclick="closeShareModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+
+        <div class="modal-header">Share IRIR Tracker</div>
+        <div class="modal-subtitle">Share this IRIR tracker with your team</div>
+
+        <div class="modal-field">
+            <label>People</label>
+            <input type="email" placeholder="Enter email addresses" id="shareNames">
+            <div class="modal-info">Separate multiple emails with commas</div>
+        </div>
+
+        <div class="modal-field">
+            <label>Message (optional)</label>
+            <textarea placeholder="Add a message..." id="shareMessage"></textarea>
+        </div>
+
+        <div class="modal-footer">
+            <button class="copy-link-btn" onclick="copyShareLink()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+                Copy link
+            </button>
+            <button class="share-btn" onclick="shareRecord()">Share</button>
+            <button class="irir-btn-cancel" style="margin-left:8px;" onclick="document.getElementById('shareModal').classList.remove('show')">Close</button>
+        </div>
+
+    </div>
+</div><!-- /shareModal -->
+
+
+<!-- ===================================================
+     CREATE MODAL
+=================================================== -->
+<div class="irir-modal-overlay" id="irirModalOverlay" onclick="closeIrirModal()">
+    <div class="irir-modal" id="irirModal" onclick="event.stopPropagation()">
+        <form id="irirForm" onsubmit="return false;">
+
+            <div class="irir-modal-header">
+                <h2>Create Incident Report</h2>
+                <div class="irir-modal-controls">
+                    <button type="button" class="irir-icon-btn" onclick="toggleFullscreenModal()" title="Fullscreen">⛶</button>
+                    <button type="button" class="irir-icon-btn" onclick="closeIrirModal()">✕</button>
+                </div>
+            </div>
+
+            <div class="irir-modal-body">
+
+                <!-- INC ID & Plant -->
+                <div class="form-row-2">
+                    <div class="irir-form-group">
+                        <label>INC ID</label>
+                        <input type="text" class="irir-input-field irir-auto-id-field" id="irirId" disabled>
+                        <p class="irir-helper-text">Auto-generated unique identifier</p>
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Plant</label>
+                        <select class="irir-select-field" id="irirPlant">
+                            <option value="">-- Select Plant --</option>
+                            <option>Plant1</option>
+                            <option>Plant2</option>
+                            <option>Plant3</option>
+                            <option>Plant4</option>
+                            <option>Plant5</option>
+                            <option>Plant6</option>
+                            <option>Plant7</option>
+                            <option>Plant8</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ===== PART A ===== -->
+                <div class="form-section-banner">
+                    <span class="section-letter">A</span>
+                    <div>
+                        <div class="section-title-text">PART A — Initial Incident Reporting</div>
+                        <div class="section-note-text">Complete this part and forward within the same shift of accident / incident to Department Head &amp; Safety Officer</div>
+                    </div>
+                </div>
+
+                <!-- Accident / Incident -->
+                <div class="irir-form-group">
+                    <label>Accident / Incident</label>
+                    <div class="multiselect-wrapper single-select-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleSingleSelect('irirTypeDd','irirTypeLabel')" id="irirTypeTrigger">
+                            <span id="irirTypeLabel">-- Select --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="irirTypeDd">
+                            <div class="ss-option" onclick="setSingleSelect('irirTypeDd','irirTypeLabel','irirType','Reportable')">Reportable</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirTypeDd','irirTypeLabel','irirType','Non-reportable')">Non-reportable</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirTypeDd','irirTypeLabel','irirType','First Aid')">First Aid</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirTypeDd','irirTypeLabel','irirType','Nearmiss')">Nearmiss</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirTypeDd','irirTypeLabel','irirType','Environment')">Environment</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirTypeDd','irirTypeLabel','irirType','Fire')">Fire</div>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="irirTypeCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('irirTypeDd','irirTypeCustomInput','irirType','irirTypeLabel')">Add</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="irirType">
+                    </div>
+                </div>
+
+                <!-- Employee Category -->
+                <div class="irir-form-group">
+                    <label>Employee Category Involved</label>
+                    <div class="multiselect-wrapper single-select-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleSingleSelect('irirEmpCatDd','irirEmpCatLabel')" id="irirEmpCatTrigger">
+                            <span id="irirEmpCatLabel">-- Select --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="irirEmpCatDd">
+                            <div class="ss-option" onclick="setSingleSelect('irirEmpCatDd','irirEmpCatLabel','irirEmployeeCategory','Executive')">Executive</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirEmpCatDd','irirEmpCatLabel','irirEmployeeCategory','Permanent Associate')">Permanent Associate</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirEmpCatDd','irirEmpCatLabel','irirEmployeeCategory','Casual Labour')">Casual Labour</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirEmpCatDd','irirEmpCatLabel','irirEmployeeCategory','Apprentice')">Apprentice</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirEmpCatDd','irirEmpCatLabel','irirEmployeeCategory','Contractor')">Contractor</div>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="irirEmpCatCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('irirEmpCatDd','irirEmpCatCustomInput','irirEmployeeCategory','irirEmpCatLabel')">Add</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="irirEmployeeCategory">
+                    </div>
+                </div>
+
+                <!-- Date -->
+                <div class="irir-form-group">
+                    <label>Date</label>
+                    <input type="date" class="irir-input-field" id="irirDate" onchange="calcMandaysLost()">
+                </div>
+
+                <!-- Time -->
+                <div class="irir-form-group">
+                    <label>Time</label>
+                    <div class="tp-trigger-wrap">
+                        <input type="text" class="irir-input-field tp-trigger-input" id="irirTime"
+                               placeholder="Select time…"
+                               onclick="openTimePicker('irirTime')"
+                               autocomplete="off">
+                        <svg class="tp-trigger-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Shift -->
+                <div class="irir-form-group">
+                    <label>Shift</label>
+                    <select class="irir-select-field" id="irirShift" onchange="handleShiftChange(this)">
+                        <option value="">-- Select --</option>
+                        <option>A (01:00 am – 08:00 am)</option>
+                        <option>B (08:00 am – 04:30 pm)</option>
+                        <option>C (04:30 pm – 01:00 am)</option>
+                    </select>
+                </div>
+
+                <!-- Gender -->
+                <div class="irir-form-group">
+                    <label>Gender</label>
+                    <select class="irir-select-field" id="irirGender">
+                        <option value="">-- Select --</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Transgender</option>
+                    </select>
+                </div>
+
+                <!-- Experience in Current Job -->
+                <div class="irir-form-group">
+                    <label>Experience in current job (in which he/she was involved at the time of injury)</label>
+                    <div style="border:1px solid #ccc;border-radius:4px;padding:8px;background:#fff;">
+                        <div style="margin-bottom:8px;">
+                            <label style="font-size:11px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Years</label>
+                            <input type="number" class="irir-input-field" id="irirExperienceYears"
+                                   placeholder="0" min="0" style="border:1px solid #dfe1e6;">
+                        </div>
+                        <div>
+                            <label style="font-size:11px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Months</label>
+                            <input type="number" class="irir-input-field" id="irirExperienceMonths"
+                                   placeholder="0" min="0" max="11" style="border:1px solid #dfe1e6;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity -->
+                <div class="irir-form-group">
+                    <label>Activity: Routine / Non-Routine</label>
+                    <select class="irir-select-field" id="irirActivity">
+                        <option value="">-- Select --</option>
+                        <option>Routine</option>
+                        <option>Non-Routine</option>
+                    </select>
+                </div>
+
+                <!-- Injured Person & Employee No -->
+                <div class="form-row-2">
+                    <div class="irir-form-group">
+                        <label>Name of the Injured Person(s)</label>
+                        <input type="text" class="irir-input-field" id="irirInjuredName" placeholder="Full name(s)">
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Employee No.</label>
+                        <input type="text" class="irir-input-field" id="irirEmployeeNo" placeholder="Employee number">
+                    </div>
+                </div>
+
+                <!-- Injury Type & Body Part -->
+                <div class="irir-form-group">
+                    <label>Injury Type &amp; Body Part Injured</label>
+                    <div class="irir-form-group" style="margin-bottom:12px;">
+                        <label style="font-weight:normal;font-size:12px;color:#5e6c84;">Injury Type</label>
+                        <div class="multiselect-wrapper single-select-wrapper">
+                            <div class="multiselect-trigger" onclick="toggleSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel')" id="irirInjuryTypeTrigger">
+                                <span id="irirInjuryTypeLabel">-- Select Injury Type --</span>
+                                <span class="ms-arrow">▼</span>
+                            </div>
+                            <div class="multiselect-dropdown" id="irirInjuryTypeDd">
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Cut / Laceration')">Cut / Laceration</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Fracture')">Fracture</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Burn')">Burn</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Crush Injury')">Crush Injury</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Sprain / Strain')">Sprain / Strain</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Abrasion')">Abrasion</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Eye Injury')">Eye Injury</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Chemical Exposure')">Chemical Exposure</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','Electric Shock')">Electric Shock</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirInjuryTypeDd','irirInjuryTypeLabel','irirInjuryType','No Injury (Near Miss)')">No Injury (Near Miss)</div>
+                                <div class="ms-add-row">
+                                    <input type="text" class="ms-add-input" id="irirInjuryTypeCustomInput" placeholder="Add option…">
+                                    <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('irirInjuryTypeDd','irirInjuryTypeCustomInput','irirInjuryType','irirInjuryTypeLabel')">Add</button>
+                                </div>
+                            </div>
+                            <input type="hidden" id="irirInjuryType">
+                        </div>
+                    </div>
+                    <div class="irir-form-group" style="margin-bottom:0;">
+                        <label style="font-weight:normal;font-size:12px;color:#5e6c84;">Body Part Injured</label>
+                        <div class="multiselect-wrapper single-select-wrapper">
+                            <div class="multiselect-trigger" onclick="toggleSingleSelect('irirBodyPartDd','irirBodyPartLabel')" id="irirBodyPartTrigger">
+                                <span id="irirBodyPartLabel">-- Select Body Part --</span>
+                                <span class="ms-arrow">▼</span>
+                            </div>
+                            <div class="multiselect-dropdown" id="irirBodyPartDd">
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Head')">Head</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Eye')">Eye</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Face')">Face</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Hand')">Hand</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Finger')">Finger</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Arm')">Arm</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Leg')">Leg</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Foot')">Foot</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Back')">Back</div>
+                                <div class="ss-option" onclick="setSingleSelect('irirBodyPartDd','irirBodyPartLabel','irirBodyPart','Chest')">Chest</div>
+                                <div class="ms-add-row">
+                                    <input type="text" class="ms-add-input" id="irirBodyPartCustomInput" placeholder="Add option…">
+                                    <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('irirBodyPartDd','irirBodyPartCustomInput','irirBodyPart','irirBodyPartLabel')">Add</button>
+                                </div>
+                            </div>
+                            <input type="hidden" id="irirBodyPart">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Name of Shop -->
+                <div class="irir-form-group">
+                    <label>Name of shop where the accident / incident has happened</label>
+                    <div class="multiselect-wrapper single-select-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleSingleSelect('irirDeptDd','irirDeptLabel')" id="irirDeptTrigger">
+                            <span id="irirDeptLabel">-- Select --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="irirDeptDd">
+                            <div class="ss-option" onclick="setSingleSelect('irirDeptDd','irirDeptLabel','irirDepartment','Production')">Production</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirDeptDd','irirDeptLabel','irirDepartment','Assembly')">Assembly</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirDeptDd','irirDeptLabel','irirDepartment','Maintenance')">Maintenance</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirDeptDd','irirDeptLabel','irirDepartment','Quality')">Quality</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirDeptDd','irirDeptLabel','irirDepartment','Warehouse')">Warehouse</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirDeptDd','irirDeptLabel','irirDepartment','Utility')">Utility</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirDeptDd','irirDeptLabel','irirDepartment','Packing')">Packing</div>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="irirDeptCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('irirDeptDd','irirDeptCustomInput','irirDepartment','irirDeptLabel')">Add</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="irirDepartment">
+                    </div>
+                </div>
+
+                <!-- Exact Location -->
+                <div class="irir-form-group">
+                    <label>Exact location where the accident / incident has happened</label>
+                    <input type="text" class="irir-input-field" id="irirLocation" placeholder="Describe exact location…">
+                </div>
+
+                <!-- Brief Narration 5W+1H -->
+                <div class="irir-form-group">
+                    <label>Brief Narration of Accident / Incident : (5W+1H)</label>
+                    <div class="narration-table">
+                        <div class="narration-row">
+                            <span class="narration-label">What :</span>
+                            <textarea class="irir-textarea-field narration-ta" id="narWhat" placeholder="What happened?"></textarea>
+                        </div>
+                        <div class="narration-row">
+                            <span class="narration-label">When :</span>
+                            <textarea class="irir-textarea-field narration-ta" id="narWhen" placeholder="When did it happen?"></textarea>
+                        </div>
+                        <div class="narration-row">
+                            <span class="narration-label">Where :</span>
+                            <textarea class="irir-textarea-field narration-ta" id="narWhere" placeholder="Where did it happen?"></textarea>
+                        </div>
+                        <div class="narration-row">
+                            <span class="narration-label">Who :</span>
+                            <textarea class="irir-textarea-field narration-ta" id="narWho" placeholder="Who was involved?"></textarea>
+                        </div>
+                        <div class="narration-row">
+                            <span class="narration-label">Which :</span>
+                            <textarea class="irir-textarea-field narration-ta" id="narWhich" placeholder="Which machine / tool / process?"></textarea>
+                        </div>
+                        <div class="narration-row">
+                            <span class="narration-label">How :</span>
+                            <textarea class="irir-textarea-field narration-ta" id="narHow" placeholder="How did it happen?"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Immediate Actions -->
+                <div class="irir-form-group">
+                    <label>Immediate Actions :</label>
+                    <textarea class="irir-textarea-field" id="irirImmediateActions" placeholder="Describe immediate actions taken…"></textarea>
+                </div>
+
+                <!-- Prepared By & Date -->
+                <div class="form-row-2">
+                    <div class="irir-form-group">
+                        <label>Prepared by Frontline Supervisor/Manager (Name &amp; Signature)</label>
+                        <input type="text" class="irir-input-field" id="irirPreparedBy" placeholder="Name &amp; Signature">
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Date :</label>
+                        <input type="date" class="irir-input-field" id="irirPreparedDate">
+                    </div>
+                </div>
+
+                <!-- Work Permit -->
+                <div class="irir-form-group">
+                    <label>Work Permit or any system followed</label>
+                    <select class="irir-select-field" id="irirWorkPermit" onchange="handleWorkPermitChange()">
+                        <option value="">-- Select --</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <!-- Conditional: PTW ID sub-dropdown (shows when Yes) -->
+                <div class="irir-form-group" id="workPermitDetailsGroup" style="display:none;">
+                    <label style="font-size:12px;font-weight:600;color:#5e6c84;">Select PTW ID</label>
+                    <div class="multiselect-wrapper single-select-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleSingleSelect('irirPtwDd','irirPtwLabel')" id="irirPtwTrigger">
+                            <span id="irirPtwLabel">-- Select PTW ID --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="irirPtwDd">
+                            <div class="ss-option" onclick="setSingleSelect('irirPtwDd','irirPtwLabel','irirPtwId','PTW-001')">PTW-001</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirPtwDd','irirPtwLabel','irirPtwId','PTW-002')">PTW-002</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirPtwDd','irirPtwLabel','irirPtwId','PTW-003')">PTW-003</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirPtwDd','irirPtwLabel','irirPtwId','PTW-004')">PTW-004</div>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="irirPtwCustomInput" placeholder="Add PTW ID…">
+                                <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('irirPtwDd','irirPtwCustomInput','irirPtwId','irirPtwLabel')">Add</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="irirPtwId">
+                    </div>
+                </div>
+
+                <div class="part-save-row">
+                    <button type="button" class="part-save-btn" onclick="savePartA()">💾 Save Part A</button>
+                </div>
+
+
+                <!-- ===== PART B ===== -->
+                <div class="form-section-banner" style="margin-top:16px;">
+                    <span class="section-letter">B</span>
+                    <div>
+                        <div class="section-title-text">PART B — Incident Investigation</div>
+                        <div class="section-note-text">Complete this part within 24 hours from the time of accident / incident and initiate corrective action</div>
+                    </div>
+                </div>
+
+                <!-- Team Members -->
+                <div class="irir-form-group">
+                    <label>1. Team Members (should consist of Shop Manager, Worker, EHS, Maintenance) :</label>
+                    <div style="gap:10px;">
+                        <div class="irir-form-group" style="margin-bottom:8px;">
+                            <label style="font-weight:normal;font-size:12px;color:#5e6c84;">Name</label>
+                            <input type="text" class="irir-input-field" id="irirTeamMemberName" placeholder="Team member name">
+                        </div>
+                        <div class="irir-form-group" style="margin-bottom:0;">
+                            <label style="font-weight:normal;font-size:12px;color:#5e6c84;">Designation</label>
+                            <input type="text" class="irir-input-field" id="irirTeamMemberDesignation" placeholder="Designation">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Witness Statement -->
+                <div class="irir-form-group">
+                    <label>2. Witness Statement (Co worker/Supervisor/Manager/Shift Incharge/Injured Person) :</label>
+                    <div class="multiselect-wrapper single-select-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleSingleSelect('irirWitnessDd','irirWitnessLabel')" id="irirWitnessTrigger">
+                            <span id="irirWitnessLabel">-- Select Witness Type --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="irirWitnessDd">
+                            <div class="ss-option" onclick="setSingleSelect('irirWitnessDd','irirWitnessLabel','irirWitnessType','Co-worker')">Co-worker</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirWitnessDd','irirWitnessLabel','irirWitnessType','Supervisor')">Supervisor</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirWitnessDd','irirWitnessLabel','irirWitnessType','Manager')">Manager</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirWitnessDd','irirWitnessLabel','irirWitnessType','Shift Incharge')">Shift Incharge</div>
+                            <div class="ss-option" onclick="setSingleSelect('irirWitnessDd','irirWitnessLabel','irirWitnessType','Injured Person')">Injured Person</div>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="irirWitnessCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('irirWitnessDd','irirWitnessCustomInput','irirWitnessType','irirWitnessLabel')">Add</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="irirWitnessType">
+                    </div>
+                    <textarea class="irir-textarea-field" id="irirWitnessStatement" placeholder="Summarise witness statement…" style="margin-top:8px;"></textarea>
+                </div>
+
+                <!-- 6M Analysis -->
+                <div class="sixm-label">Accident / Incident Investigation &amp; Analysis (6M &amp; Why-Why Analysis)</div>
+
+                <!-- MAN — multi-select -->
+                <div class="irir-form-group">
+                    <label>Man</label>
+                    <div class="multiselect-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleMultiSelect('manMultiDropdown')" id="manMultiTrigger">
+                            <span id="manMultiLabel">-- Select (multiple) --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="manMultiDropdown">
+                            <label class="ms-option"><input type="checkbox" value="Not aware of requirement" onchange="onSixMChange('man')"> Not aware of requirement</label>
+                            <label class="ms-option"><input type="checkbox" value="Bypassing safety equipment" onchange="onSixMChange('man')"> Bypassing safety equipment</label>
+                            <label class="ms-option"><input type="checkbox" value="Violation of defined rule" onchange="onSixMChange('man')"> Violation of defined rule</label>
+                            <label class="ms-option"><input type="checkbox" value="Use of wrong tools" onchange="onSixMChange('man')"> Use of wrong tools</label>
+                            <label class="ms-option"><input type="checkbox" value="Failed to check" onchange="onSixMChange('man')"> Failed to check</label>
+                            <label class="ms-option"><input type="checkbox" value="Failed to use controls" onchange="onSixMChange('man')"> Failed to use controls</label>
+                            <label class="ms-option"><input type="checkbox" value="Unsafe body position" onchange="onSixMChange('man')"> Unsafe body position</label>
+                            <label class="ms-option"><input type="checkbox" value="Horseplay" onchange="onSixMChange('man')"> Horseplay</label>
+                            <label class="ms-option"><input type="checkbox" value="Unauthorized operation" onchange="onSixMChange('man')"> Unauthorized operation</label>
+                            <label class="ms-option"><input type="checkbox" value="Not followed the procedure" onchange="onSixMChange('man')"> Not followed the procedure</label>
+                            <label class="ms-option"><input type="checkbox" value="Action of co-employee" onchange="onSixMChange('man')"> Action of co-employee</label>
+                            <label class="ms-option"><input type="checkbox" value="Over confidence" onchange="onSixMChange('man')"> Over confidence</label>
+                            <label class="ms-option"><input type="checkbox" value="Diverted attention" onchange="onSixMChange('man')"> Diverted attention</label>
+                            <label class="ms-option"><input type="checkbox" value="Fatigue" onchange="onSixMChange('man')"> Fatigue</label>
+                            <label class="ms-option"><input type="checkbox" value="Overtime working" onchange="onSixMChange('man')"> Overtime working</label>
+                            <label class="ms-option ms-na"><input type="checkbox" value="Not applicable" onchange="onSixMChange('man')"> Not applicable</label>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="manCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addCustomSixMOption('man','manCustomInput','manMultiDropdown')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Why-Why dynamic container for Man -->
+                <div id="whyWhyContainer_man"></div>
+
+                <!-- MACHINE — multi-select -->
+                <div class="irir-form-group">
+                    <label>Machine</label>
+                    <div class="multiselect-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleMultiSelect('machineMultiDropdown')" id="machineMultiTrigger">
+                            <span id="machineMultiLabel">-- Select (multiple) --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="machineMultiDropdown">
+                            <label class="ms-option"><input type="checkbox" value="Inadequate guarding" onchange="onSixMChange('machine')"> Inadequate guarding</label>
+                            <label class="ms-option"><input type="checkbox" value="Failure of interlock" onchange="onSixMChange('machine')"> Failure of interlock</label>
+                            <label class="ms-option"><input type="checkbox" value="Failure of photo sensor" onchange="onSixMChange('machine')"> Failure of photo sensor</label>
+                            <label class="ms-option"><input type="checkbox" value="Failure of machine controls" onchange="onSixMChange('machine')"> Failure of machine controls</label>
+                            <label class="ms-option"><input type="checkbox" value="Malfunction of controls" onchange="onSixMChange('machine')"> Malfunction of controls</label>
+                            <label class="ms-option"><input type="checkbox" value="Non-standard equipment" onchange="onSixMChange('machine')"> Non-standard equipment</label>
+                            <label class="ms-option"><input type="checkbox" value="No lockout provision" onchange="onSixMChange('machine')"> No lockout provision</label>
+                            <label class="ms-option"><input type="checkbox" value="No interlock" onchange="onSixMChange('machine')"> No interlock</label>
+                            <label class="ms-option"><input type="checkbox" value="No sensor" onchange="onSixMChange('machine')"> No sensor</label>
+                            <label class="ms-option"><input type="checkbox" value="No Safety guard" onchange="onSixMChange('machine')"> No Safety guard</label>
+                            <label class="ms-option"><input type="checkbox" value="Unearthed machine" onchange="onSixMChange('machine')"> Unearthed machine</label>
+                            <label class="ms-option"><input type="checkbox" value="Static charge" onchange="onSixMChange('machine')"> Static charge</label>
+                            <label class="ms-option"><input type="checkbox" value="Damaged machine / tools / equipment" onchange="onSixMChange('machine')"> Damaged machine / tools / equipment</label>
+                            <label class="ms-option"><input type="checkbox" value="Sharp Machine Part / Tool" onchange="onSixMChange('machine')"> Sharp Machine Part / Tool</label>
+                            <label class="ms-option"><input type="checkbox" value="No Lifting arrangement" onchange="onSixMChange('machine')"> No Lifting arrangement</label>
+                            <label class="ms-option ms-na"><input type="checkbox" value="Not applicable" onchange="onSixMChange('machine')"> Not applicable</label>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="machineCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addCustomSixMOption('machine','machineCustomInput','machineMultiDropdown')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="whyWhyContainer_machine"></div>
+
+                <!-- MATERIAL — multi-select -->
+                <div class="irir-form-group">
+                    <label>Material</label>
+                    <div class="multiselect-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleMultiSelect('materialMultiDropdown')" id="materialMultiTrigger">
+                            <span id="materialMultiLabel">-- Select (multiple) --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="materialMultiDropdown">
+                            <label class="ms-option"><input type="checkbox" value="Hot / cold object" onchange="onSixMChange('material')"> Hot / cold object</label>
+                            <label class="ms-option"><input type="checkbox" value="Hazardous chemical" onchange="onSixMChange('material')"> Hazardous chemical</label>
+                            <label class="ms-option"><input type="checkbox" value="Non-standard material" onchange="onSixMChange('material')"> Non-standard material</label>
+                            <label class="ms-option"><input type="checkbox" value="Reworked material" onchange="onSixMChange('material')"> Reworked material</label>
+                            <label class="ms-option"><input type="checkbox" value="Oily material" onchange="onSixMChange('material')"> Oily material</label>
+                            <label class="ms-option"><input type="checkbox" value="Heavy accumulation of vapor / gas / dust" onchange="onSixMChange('material')"> Heavy accumulation of vapor / gas / dust</label>
+                            <label class="ms-option"><input type="checkbox" value="Wrong selection of material" onchange="onSixMChange('material')"> Wrong selection of material</label>
+                            <label class="ms-option"><input type="checkbox" value="Sharp edges" onchange="onSixMChange('material')"> Sharp edges</label>
+                            <label class="ms-option"><input type="checkbox" value="Adverse physical / chemical properties" onchange="onSixMChange('material')"> Adverse physical / chemical properties</label>
+                            <label class="ms-option"><input type="checkbox" value="Heavy Object" onchange="onSixMChange('material')"> Heavy Object</label>
+                            <label class="ms-option ms-na"><input type="checkbox" value="Not applicable" onchange="onSixMChange('material')"> Not applicable</label>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="materialCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addCustomSixMOption('material','materialCustomInput','materialMultiDropdown')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="whyWhyContainer_material"></div>
+
+                <!-- METHOD — multi-select -->
+                <div class="irir-form-group">
+                    <label>Method</label>
+                    <div class="multiselect-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleMultiSelect('methodMultiDropdown')" id="methodMultiTrigger">
+                            <span id="methodMultiLabel">-- Select (multiple) --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="methodMultiDropdown">
+                            <label class="ms-option"><input type="checkbox" value="Improper loading height" onchange="onSixMChange('method')"> Improper loading height</label>
+                            <label class="ms-option"><input type="checkbox" value="Manual handling" onchange="onSixMChange('method')"> Manual handling</label>
+                            <label class="ms-option"><input type="checkbox" value="No safe procedure" onchange="onSixMChange('method')"> No safe procedure</label>
+                            <label class="ms-option"><input type="checkbox" value="Non-standard methods" onchange="onSixMChange('method')"> Non-standard methods</label>
+                            <label class="ms-option"><input type="checkbox" value="Inadequate maintenance" onchange="onSixMChange('method')"> Inadequate maintenance</label>
+                            <label class="ms-option"><input type="checkbox" value="Absence of planning" onchange="onSixMChange('method')"> Absence of planning</label>
+                            <label class="ms-option"><input type="checkbox" value="Inadequate contractor management" onchange="onSixMChange('method')"> Inadequate contractor management</label>
+                            <label class="ms-option ms-na"><input type="checkbox" value="Not applicable" onchange="onSixMChange('method')"> Not applicable</label>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="methodCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addCustomSixMOption('method','methodCustomInput','methodMultiDropdown')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="whyWhyContainer_method"></div>
+
+                <!-- MEASUREMENT — multi-select -->
+                <div class="irir-form-group">
+                    <label>Measurement</label>
+                    <div class="multiselect-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleMultiSelect('measurementMultiDropdown')" id="measurementMultiTrigger">
+                            <span id="measurementMultiLabel">-- Select (multiple) --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="measurementMultiDropdown">
+                            <label class="ms-option"><input type="checkbox" value="Inadequate monitoring" onchange="onSixMChange('measurement')"> Inadequate monitoring</label>
+                            <label class="ms-option"><input type="checkbox" value="Low illumination" onchange="onSixMChange('measurement')"> Low illumination</label>
+                            <label class="ms-option"><input type="checkbox" value="Heavy dust / fume at work place" onchange="onSixMChange('measurement')"> Heavy dust / fume at work place</label>
+                            <label class="ms-option"><input type="checkbox" value="Congested Layout" onchange="onSixMChange('measurement')"> Congested Layout</label>
+                            <label class="ms-option"><input type="checkbox" value="Inadequate risk assessment" onchange="onSixMChange('measurement')"> Inadequate risk assessment</label>
+                            <label class="ms-option"><input type="checkbox" value="Uneven floor / surface" onchange="onSixMChange('measurement')"> Uneven floor / surface</label>
+                            <label class="ms-option"><input type="checkbox" value="Excess vibration" onchange="onSixMChange('measurement')"> Excess vibration</label>
+                            <label class="ms-option"><input type="checkbox" value="Blind corner" onchange="onSixMChange('measurement')"> Blind corner</label>
+                            <label class="ms-option"><input type="checkbox" value="Poor housekeeping" onchange="onSixMChange('measurement')"> Poor housekeeping</label>
+                            <label class="ms-option"><input type="checkbox" value="Poor access / inadequate space" onchange="onSixMChange('measurement')"> Poor access / inadequate space</label>
+                            <label class="ms-option"><input type="checkbox" value="Lack of visual displays at work place" onchange="onSixMChange('measurement')"> Lack of visual displays at work place</label>
+                            <label class="ms-option ms-na"><input type="checkbox" value="Not applicable" onchange="onSixMChange('measurement')"> Not applicable</label>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="measurementCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addCustomSixMOption('measurement','measurementCustomInput','measurementMultiDropdown')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="whyWhyContainer_measurement"></div>
+
+                <!-- MOTHER NATURE — multi-select -->
+                <div class="irir-form-group">
+                    <label>Mother Nature</label>
+                    <div class="multiselect-wrapper">
+                        <div class="multiselect-trigger" onclick="toggleMultiSelect('motherNatureMultiDropdown')" id="motherNatureMultiTrigger">
+                            <span id="motherNatureMultiLabel">-- Select (multiple) --</span>
+                            <span class="ms-arrow">▼</span>
+                        </div>
+                        <div class="multiselect-dropdown" id="motherNatureMultiDropdown">
+                            <label class="ms-option"><input type="checkbox" value="Ambient temperature" onchange="onSixMChange('motherNature')"> Ambient temperature</label>
+                            <label class="ms-option"><input type="checkbox" value="Earthquake" onchange="onSixMChange('motherNature')"> Earthquake</label>
+                            <label class="ms-option"><input type="checkbox" value="Heavy Rain" onchange="onSixMChange('motherNature')"> Heavy Rain</label>
+                            <label class="ms-option"><input type="checkbox" value="Storm" onchange="onSixMChange('motherNature')"> Storm</label>
+                            <label class="ms-option"><input type="checkbox" value="Radiations" onchange="onSixMChange('motherNature')"> Radiations</label>
+                            <label class="ms-option"><input type="checkbox" value="Dense population" onchange="onSixMChange('motherNature')"> Dense population</label>
+                            <label class="ms-option"><input type="checkbox" value="Sound pollution" onchange="onSixMChange('motherNature')"> Sound pollution</label>
+                            <label class="ms-option"><input type="checkbox" value="Water pollution" onchange="onSixMChange('motherNature')"> Water pollution</label>
+                            <label class="ms-option"><input type="checkbox" value="Air pollution" onchange="onSixMChange('motherNature')"> Air pollution</label>
+                            <label class="ms-option"><input type="checkbox" value="Poor Visibility / sunlight / Fog" onchange="onSixMChange('motherNature')"> Poor Visibility / sunlight / Fog</label>
+                            <label class="ms-option"><input type="checkbox" value="Slippery land / surface" onchange="onSixMChange('motherNature')"> Slippery land / surface</label>
+                            <label class="ms-option ms-na"><input type="checkbox" value="Not applicable" onchange="onSixMChange('motherNature')"> Not applicable</label>
+                            <div class="ms-add-row">
+                                <input type="text" class="ms-add-input" id="motherNatureCustomInput" placeholder="Add option…">
+                                <button type="button" class="ms-add-btn" onclick="addCustomSixMOption('motherNature','motherNatureCustomInput','motherNatureMultiDropdown')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="whyWhyContainer_motherNature"></div>
+
+                <!-- Corrective Actions — single CAPA ID per incident -->
+                <div class="irir-form-group" style="margin-top:20px;">
+                    <label>Corrective Actions :</label>
+
+                    <!-- Single CAPA ID (auto-generated) -->
+                    <div class="capa-id-row">
+                        <span class="capa-id-label">CAPA ID :</span>
+                        <span class="capa-id-value irir-auto-id-field" id="capaIdDisplay">Auto on Save</span>
+                    </div>
+
+                    <div class="ca-table-wrapper">
+                        <table class="ca-table" id="caTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th style="width:220px;">Corrective Action</th>
+                                    <th style="width:130px;">Responsibility</th>
+                                    <th style="width:110px;">Status</th>
+                                    <th style="width:60px;text-align:center;">+/−</th>
+                                </tr>
+                            </thead>
+                            <tbody id="caTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Is this corrective action needed for any other shopfloor? -->
+                    <div class="irir-form-group" style="margin-top:12px;">
+                        <label>Is this corrective action needed for any other shopfloor?</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="capaShopfloor" value="Yes" onchange="handleCapaShopfloorChange(this)"> Yes</label>
+                            <label class="radio-label"><input type="radio" name="capaShopfloor" value="No" onchange="handleCapaShopfloorChange(this)" checked> No</label>
+                        </div>
+                        <div id="capaShopfloorGroup" style="display:none;margin-top:8px;">
+                            <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Select Shopfloor(s)</label>
+                            <div class="multiselect-wrapper">
+                                <div class="multiselect-trigger" onclick="toggleMultiSelect('shopfloorMultiDropdown')" id="shopfloorMultiTrigger">
+                                    <span id="shopfloorMultiLabel">-- Select shopfloor(s) --</span>
+                                    <span class="ms-arrow">&#9660;</span>
+                                </div>
+                                <div class="multiselect-dropdown" id="shopfloorMultiDropdown">
+                                    <label class="ms-option"><input type="checkbox" value="Production"> Production</label>
+                                    <label class="ms-option"><input type="checkbox" value="Assembly"> Assembly</label>
+                                    <label class="ms-option"><input type="checkbox" value="Maintenance"> Maintenance</label>
+                                    <label class="ms-option"><input type="checkbox" value="Quality"> Quality</label>
+                                    <label class="ms-option"><input type="checkbox" value="Warehouse"> Warehouse</label>
+                                    <label class="ms-option"><input type="checkbox" value="Utility"> Utility</label>
+                                    <label class="ms-option"><input type="checkbox" value="Packing"> Packing</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Target Date of CAPA + CAPA Type -->
+                    <div class="form-row-2" style="margin-top:12px;">
+                        <div class="irir-form-group" style="margin-bottom:0;">
+                            <label>Target Date of CAPA</label>
+                            <input type="date" class="irir-input-field" id="capaTargetDate">
+                        </div>
+                        <div class="irir-form-group" style="margin-bottom:0;">
+                            <label>CAPA Type</label>
+                            <select class="irir-select-field" id="irirCapaType">
+                                <option value="">-- Select CAPA Type --</option>
+                                <option>Elimination</option>
+                                <option>Substitution</option>
+                                <option>Engineering Controls</option>
+                                <option>Administrative Controls</option>
+                                <option>PPE</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- OCP/WI — dropdown of modified SOPs -->
+                    <div class="irir-form-group" style="margin-top:12px;">
+                        <label>OCP/WI &#8212; WIS modified &amp; new startup check sheet introduced</label>
+                        <div class="multiselect-wrapper single-select-wrapper">
+                            <div class="multiselect-trigger" onclick="toggleSingleSelect('syscWisDd','syscWisLabel')" id="syscWisTrigger">
+                                <span id="syscWisLabel">-- Select --</span>
+                                <span class="ms-arrow">▼</span>
+                            </div>
+                            <div class="multiselect-dropdown" id="syscWisDd">
+                                <div class="ss-option" onclick="setSingleSelectOcp('Modified SOP')">Modified SOP</div>
+                                <div class="ms-add-row">
+                                    <input type="text" class="ms-add-input" id="syscWisCustomInput" placeholder="Add option…">
+                                    <button type="button" class="ms-add-btn" onclick="addSingleSelectOption('syscWisDd','syscWisCustomInput','syscWisRef','syscWisLabel')">Add</button>
+                                </div>
+                            </div>
+                            <input type="hidden" id="syscWisRef">
+                        </div>
+                        <div id="ocpSopGroup" style="display:none;margin-top:8px;">
+                            <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Select SOP (from SOP Tracker)</label>
+                            <select class="irir-select-field" id="ocpSopId">
+                                <option value="">-- Select SOP --</option>
+                                <option value="SOP-001">SOP-001</option>
+                                <option value="SOP-002">SOP-002</option>
+                                <option value="SOP-003">SOP-003</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Root Cause &#8212; moved AFTER Corrective Actions per spec -->
+                <div class="irir-form-group">
+                    <label>Root Cause (Act / Condition) :</label>
+                    <select class="irir-select-field" id="irirRootCause" onchange="handleRootCauseChange()">
+                        <option value="">-- Select Root Cause --</option>
+                        <option>Unsafe Act</option>
+                        <option>Unsafe Condition</option>
+                    </select>
+                </div>
+
+                <!-- Conditional: Brief of Unsafe Act / Condition -->
+                <div class="irir-form-group" id="unsafeActBriefGroup" style="display:none;">
+                    <label id="unsafeActBriefLabel">Brief of the unsafe act</label>
+                    <textarea class="irir-textarea-field" id="irirUnsafeActBrief" placeholder="Brief description&hellip;"></textarea>
+                </div>
+
+                <div class="sys-corrections-box">
+                    <div class="sixm-label" style="margin-bottom:14px;">System Corrections</div>
+
+                    <!-- HIRA Study — Yes: HIRA no + RPN before/after + date + new action. No: TDC -->
+                    <div class="irir-form-group">
+                        <label>HIRA Study — HIRA revisited and updated</label>
+                        <select class="irir-select-field" id="syscHiraYesNo" onchange="handleSyscHiraChange()">
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        <!-- Yes path -->
+                        <div id="hiraYesGroup" style="display:none;margin-top:8px;">
+                            <div class="form-row-2">
+                                <div class="irir-form-group" style="margin-bottom:8px;">
+                                    <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">HIRA Number</label>
+                                    <select class="irir-select-field" id="syscHiraRef">
+                                        <option value="">-- Select HIRA No. --</option>
+                                        <option>HIRA-001</option>
+                                        <option>HIRA-002</option>
+                                        <option>HIRA-003</option>
+                                    </select>
+                                </div>
+                                <div class="irir-form-group" style="margin-bottom:8px;">
+                                    <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Risk Modified Date &amp; Time</label>
+                                    <input type="date" class="irir-input-field" id="syscHiraDate">
+                                </div>
+                            </div>
+                            <div class="form-row-2">
+                                <div class="irir-form-group" style="margin-bottom:0;">
+                                    <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">RPN Score Before</label>
+                                    <input type="number" class="irir-input-field" id="hiraRpnBefore" placeholder="RPN before" min="0">
+                                </div>
+                                <div class="irir-form-group" style="margin-bottom:0;">
+                                    <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">RPN Score After</label>
+                                    <input type="number" class="irir-input-field" id="hiraRpnAfter" placeholder="RPN after" min="0">
+                                </div>
+                            </div>
+                            <div class="irir-form-group" style="margin-top:8px;margin-bottom:0;">
+                                <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Any New Action Amended</label>
+                                <textarea class="irir-textarea-field" id="hiraNewAction" placeholder="Describe new action if any…" style="min-height:60px;"></textarea>
+                            </div>
+                        </div>
+                        <!-- No path -->
+                        <div id="hiraNoGroup" style="display:none;margin-top:8px;">
+                            <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Target Date of Completion (HIRA)</label>
+                            <input type="date" class="irir-input-field" id="hiraTdc">
+                        </div>
+                    </div>
+
+                    <!-- EAI Study — Yes: ref no. No: responsible + TDC. Also: Not applicable -->
+                    <div class="irir-form-group">
+                        <label>EAI Study</label>
+                        <select class="irir-select-field" id="syscEaiYesNo" onchange="handleSyscEaiChange()">
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Not applicable">Not applicable</option>
+                        </select>
+                        <!-- Yes path -->
+                        <div id="eaiYesGroup" style="display:none;margin-top:8px;">
+                            <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">EAI Reference Number</label>
+                            <input type="text" class="irir-input-field" id="syscEaiRef" placeholder="Reference EAI no.">
+                        </div>
+                        <!-- No path -->
+                        <div id="eaiNoGroup" style="display:none;margin-top:8px;">
+                            <div class="form-row-2">
+                                <div class="irir-form-group" style="margin-bottom:0;">
+                                    <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Responsible Person</label>
+                                    <input type="text" class="irir-input-field" id="eaiNoResp" placeholder="Responsible person">
+                                </div>
+                                <div class="irir-form-group" style="margin-bottom:0;">
+                                    <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Target Date of Completion</label>
+                                    <input type="date" class="irir-input-field" id="eaiNoTdc">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /sys-corrections-box -->
+
+                <!-- Prepared By & Approved By (Part B) -->
+                <div class="form-row-2" style="margin-top:16px;">
+                    <div class="irir-form-group">
+                        <label>Prepared By Front-line Supervisor / Manager (Name &amp; Signature) :</label>
+                        <input type="text" class="irir-input-field" id="partBPreparedBy" placeholder="Name &amp; Signature">
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Date :</label>
+                        <input type="date" class="irir-input-field" id="partBPreparedDate">
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="irir-form-group">
+                        <label>Approved By Department Head (Name &amp; Signature) :</label>
+                        <input type="text" class="irir-input-field" id="partBApprovedBy" placeholder="Name &amp; Signature">
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Date :</label>
+                        <input type="date" class="irir-input-field" id="partBApprovedDate">
+                    </div>
+                </div>
+
+                <div class="part-save-row">
+                    <button type="button" class="part-save-btn" onclick="savePartB()">💾 Save Part B</button>
+                </div>
+
+
+                <!-- ===== PART C ===== -->
+                <div class="form-section-banner" style="margin-top:16px;">
+                    <span class="section-letter">C</span>
+                    <div>
+                        <div class="section-title-text">PART C — To be filled by Safety Officer</div>
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="irir-form-group">
+                        <label>Source/Situation of Injury / Incident :</label>
+                        <textarea class="irir-textarea-field" id="irirSourceSituation" placeholder="Describe source or situation…"></textarea>
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Other Remarks :</label>
+                        <textarea class="irir-textarea-field" id="irirOtherRemarks" placeholder="Any other remarks…"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row-3">
+                    <div class="irir-form-group">
+                        <label>Date of return to work :</label>
+                        <input type="date" class="irir-input-field" id="irirReturnDate" onchange="calcMandaysLost()">
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Man-days Lost :</label>
+                        <input type="text" class="irir-input-field irir-auto-id-field" id="irirMandaysLost" disabled placeholder="Auto-calculated">
+                        <p class="irir-helper-text">If person left today, tomorrow counts as Day 1</p>
+                    </div>
+                    <div class="irir-form-group">
+                        <label>Reoccurrence of similar accident / incident :</label>
+                        <select class="irir-select-field" id="irirReoccurrence" onchange="handleReoccurrenceChange()">
+                            <option value="">-- Select --</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                        <div id="reoccurrenceIncidentGroup" style="display:none;margin-top:8px;">
+                            <label style="font-size:12px;font-weight:600;color:#5e6c84;display:block;margin-bottom:4px;">Select Previous Incident ID</label>
+                            <select class="irir-select-field" id="irirReoccurrenceIncidentId">
+                                <option value="">-- Select Incident ID --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="part-save-row">
+                    <button type="button" class="part-save-btn" onclick="savePartC()">💾 Save Part C</button>
+                </div>
+
+
+                <!-- ===== PART D ===== -->
+                <div class="form-section-banner" style="margin-top:16px;">
+                    <span class="section-letter">D</span>
+                    <div>
+                        <div class="section-title-text">PART D — Cost Impact</div>
+                        <div class="section-note-text">Total Cost Impact in Rupees is auto-calculated</div>
+                    </div>
+                </div>
+
+                <!-- Cost Grid -->
+                <div class="cost-grid-modal">
+                    <div class="cost-item">
+                        <label>Man (₹)</label>
+                        <input type="number" class="irir-input-field cost-inp" id="costMan"
+                               min="0" placeholder="0" oninput="calcModalTotal()">
+                    </div>
+                    <div class="cost-item">
+                        <label>Machine (₹)</label>
+                        <input type="number" class="irir-input-field cost-inp" id="costMachine"
+                               min="0" placeholder="0" oninput="calcModalTotal()">
+                    </div>
+                    <div class="cost-item">
+                        <label>Material (₹)</label>
+                        <input type="number" class="irir-input-field cost-inp" id="costMaterial"
+                               min="0" placeholder="0" oninput="calcModalTotal()">
+                    </div>
+                    <div class="cost-item">
+                        <label>Method (₹)</label>
+                        <input type="number" class="irir-input-field cost-inp" id="costMethod"
+                               min="0" placeholder="0" oninput="calcModalTotal()">
+                    </div>
+                    <div class="cost-item">
+                        <label>Management (₹)</label>
+                        <input type="number" class="irir-input-field cost-inp" id="costManagement"
+                               min="0" placeholder="0" oninput="calcModalTotal()">
+                    </div>
+                    <div class="cost-item">
+                        <label>Mother Nature (₹)</label>
+                        <input type="number" class="irir-input-field cost-inp" id="costNature"
+                               min="0" placeholder="0" oninput="calcModalTotal()">
+                    </div>
+                </div>
+
+                <!-- Total Cost -->
+                <div class="cost-total-modal">
+                    <span>Total Cost Impact in Rupees</span>
+                    <span class="cost-total-val">₹ <span id="modalTotalCost">0.00</span></span>
+                </div>
+
+                <!-- Effectiveness Monitoring -->
+                <div class="sixm-label" style="margin-top:20px;">Corrective Actions — Effectiveness Monitoring</div>
+                <div id="effMonthsContainer"></div>
+
+                <!-- Target Date of Completion of Incident (new field per spec) -->
+                <div class="irir-form-group" style="margin-top:12px;">
+                    <label>Target Date of Completion of Incident</label>
+                    <input type="date" class="irir-input-field" id="irirIncidentTargetDate">
+                </div>
+
+                <!-- Status — blocks Closed if CAPA is Open -->
+                <div class="irir-form-group">
+                    <label>Incident Status</label>
+                    <select class="irir-select-field" id="irirStatus" onchange="handleStatusChange(this)">
+                        <option value="">-- Select Status --</option>
+                        <option>Open</option>
+                        <option>Under Investigation</option>
+                        <option>Closed</option>
+                    </select>
+                    <p class="irir-helper-text" id="statusBlockMsg" style="display:none;color:#de350b;">&#9888;&#65039; Cannot close — CAPA status is still Open. Please close all CAPAs first.</p>
+                </div>
+
+                <div class="part-save-row">
+                    <button type="button" class="part-save-btn" onclick="savePartD()">💾 Save Part D</button>
+                </div>
+
+            </div><!-- /irir-modal-body -->
+
+            <div class="irir-modal-footer">
+                <label class="irir-checkbox-label">
+                    <input type="checkbox" id="createAnother">
+                    <span>Create another</span>
+                </label>
+                <div class="irir-footer-buttons">
+                    <button type="button" class="irir-btn-cancel" onclick="closeIrirModal()">Cancel</button>
+                    <button type="submit" class="irir-btn-submit">Save All &amp; Create</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div><!-- /irirModalOverlay -->
+
+
+<!-- ===================================================
+     BULK DELETE FLOATING BAR
+=================================================== -->
+<div class="bulk-delete-bar" id="irirBulkDeleteBar">
+    <span class="bulk-count" id="irirBulkSelectedCount">0 selected</span>
+    <button class="bulk-delete-btn" onclick="deleteSelectedIrirs()">🗑️ Delete Selected</button>
+    <button class="bulk-cancel-btn" onclick="cancelBulkSelection()">✕ Cancel</button>
+</div>
+
+
+<!-- ===================================================
+     TIME PICKER OVERLAY
+=================================================== -->
+<div class="timepicker-overlay" id="timepickerOverlay" onclick="onTpOverlayClick(event)">
+    <div class="tp-dialog" id="tpDialog">
+
+        <div class="tp-mode-label" id="tpModeLabel">ENTER TIME</div>
+
+        <!-- Keyboard Mode -->
+        <div class="tp-keyboard" id="tpKeyboard">
+            <div class="tp-keyboard-row">
+                <div class="tp-field-wrap">
+                    <input type="text" class="tp-num-input active-field" id="tpHourInput"
+                           maxlength="2" inputmode="numeric" placeholder="--"
+                           oninput="onTpHourInput(this)"
+                           onkeydown="onTpHourKey(event)"
+                           onfocus="tpFocusField('hour')">
+                    <label>Hour</label>
+                </div>
+                <div class="tp-colon">:</div>
+                <div class="tp-field-wrap">
+                    <input type="text" class="tp-num-input" id="tpMinInput"
+                           maxlength="2" inputmode="numeric" placeholder="--"
+                           oninput="onTpMinInput(this)"
+                           onkeydown="onTpMinKey(event)"
+                           onfocus="tpFocusField('min')">
+                    <label>Minute</label>
+                </div>
+                <div class="tp-ampm-col">
+                    <button id="tpKbAM" class="active" onclick="tpSetAmPm('AM')">AM</button>
+                    <button id="tpKbPM" onclick="tpSetAmPm('PM')">PM</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analog Clock Mode -->
+        <div class="tp-analog" id="tpAnalog">
+            <div class="tp-analog-display">
+                <div class="tp-ad-seg active" id="tpAdHour" onclick="tpClockSelectHour()">12</div>
+                <div class="tp-ad-colon">:</div>
+                <div class="tp-ad-seg" id="tpAdMin" onclick="tpClockSelectMin()">00</div>
+                <div class="tp-ad-ampm">
+                    <button id="tpClAM" class="active" onclick="tpSetAmPm('AM')">AM</button>
+                    <button id="tpClPM" onclick="tpSetAmPm('PM')">PM</button>
+                </div>
+            </div>
+            <div class="tp-selecting-label" id="tpSelectingLabel">SELECT HOUR</div>
+            <div class="tp-clock-face" id="tpClockFace"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="tp-footer">
+            <button class="tp-mode-toggle" id="tpModeBtn" onclick="tpToggleMode()">
+                <svg id="tpModeIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+                </svg>
+                <span id="tpModeLabelBtn">Analog</span>
+            </button>
+            <div class="tp-footer-btns">
+                <button class="tp-btn-cancel" onclick="tpClose()">CANCEL</button>
+                <button class="tp-btn-ok" onclick="tpConfirm()">OK</button>
+            </div>
+        </div>
+
+    </div>
+</div><!-- /timepicker-overlay -->
+
+
+<!-- ===================================================
+     SCRIPT
+=================================================== -->
+<script src="irir.js" defer></script>
+
+</body>
+</html>
