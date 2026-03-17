@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPA Tracker</title>
+    <link rel="stylesheet" href="capa.css">
+</head>
+<body>
+    <!-- CAPA Tracker -->
+    <div class="capa-management" id="capaManagement">
+        <div class="header">
+            <div class="header-left">
+                <h1 class="header-title">
+                    CAPA Tracker
+                    <span class="star-icon">☆</span>
+                </h1>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-create-primary" onclick="openCapaModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                    Create
+                </button>
+                <div class="btn-wrapper">
+                    <button class="btn" onclick="toggleHeaderDropdown('appsDropdown')">Apps ▼</button>
+                    <div class="header-dropdown" id="appsDropdown">
+                        <div class="header-dropdown-item" onclick="openInGoogleSheets()">📊 Open in Google Sheets</div>
+                        <div class="header-dropdown-item" onclick="openInMicrosoftExcel()">📊 Open in Microsoft Excel</div>
+                    </div>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="btn" onclick="openShareModal()">Share ▼</button>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="btn" onclick="toggleHeaderDropdown('exportDropdown')">Export ▼</button>
+                    <div class="header-dropdown" id="exportDropdown">
+                        <div class="header-dropdown-item" onclick="printList()">Print list</div>
+                        <div class="header-dropdown-item" onclick="printDetails()">Print details</div>
+                        <div class="header-dropdown-divider"></div>
+                        <div class="header-dropdown-item" onclick="exportXML()">Export XML</div>
+                        <div class="header-dropdown-item" onclick="exportCSV()">Export CSV</div>
+                        <div class="header-dropdown-item" onclick="exportExcel()">Export Excel</div>
+                    </div>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="btn" onclick="toggleColumnSelector()">⚙️ Columns</button>
+                    <div class="header-dropdown column-selector-dropdown" id="columnSelectorDropdown">
+                        <div class="column-selector-header">Show/Hide Columns</div>
+                        <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this, 5)"> Incident ID</label>
+                        <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this, 6)"> CAPA by Respective Plant</label>
+                        <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this, 7)"> Target Date of Completion</label>
+                        <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this, 8)"> CAPA TYPE</label>
+                        <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this, 9)"> Status of CAPA</label>
+                        <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this, 10)"> Approval for HD</label>
+                    </div>
+                </div>
+                <div class="btn-wrapper">
+                    <button class="btn" onclick="toggleHeaderDropdown('moreOptionsDropdown')">⋯</button>
+                    <div class="header-dropdown more-options-dropdown" id="moreOptionsDropdown">
+                        <div class="header-dropdown-item" onclick="viewAsChart()">📊 View items as a chart</div>
+                        <div class="header-dropdown-item" onclick="bulkChange()">🔄 Bulk change items</div>
+                        <div class="header-dropdown-item" onclick="importCSV()">📥 Import from CSV</div>
+                        <div class="header-dropdown-divider"></div>
+                        <div class="header-dropdown-item" onclick="giveFeedback()">💬 Give feedback</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <button class="ask-ai-btn" onclick="toggleAISearch()">Ask AI</button>
+            
+            <div class="ai-search-container" id="aiSearchContainer">
+                <div class="ai-search-box">
+                    <input type="text" id="aiSearchInput" placeholder="">
+                    <button class="ai-go-btn" onclick="executeAISearch()">Go →</button>
+                    <button class="ai-close-btn" onclick="closeAISearch()">✕</button>
+                </div>
+            </div>
+            
+            <div class="search-box" id="searchSection">
+                <input type="text" placeholder="Search CAPA" onkeyup="searchTable(this.value)">
+            </div>
+
+            <div class="filter-wrapper">
+                <button class="btn btn-more-filters" onclick="toggleMoreFilters()">More Filters ▼</button>
+                
+                <div class="more-filters-dropdown" id="moreFiltersDropdown">
+                    <div class="more-filters-content">
+
+                        <div class="filter-menu-item" onmouseenter="showSubmenu('categorySubmenu')" onmouseleave="hideSubmenu('categorySubmenu')">
+                            <span>Category</span>
+                            <span class="submenu-arrow">▶</span>
+                            <div class="filter-submenu" id="categorySubmenu">
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Reportable" onchange="applyMoreFilters()">
+                                    <span class="badge severity-r">Reportable</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Non-Reportable" onchange="applyMoreFilters()">
+                                    <span class="badge severity-nr">Non-Reportable</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="First Aid" onchange="applyMoreFilters()">
+                                    <span class="badge severity-fa">First Aid</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Near Miss" onchange="applyMoreFilters()">
+                                    <span class="badge severity-nm">Near Miss</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Environment" onchange="applyMoreFilters()">
+                                    <span class="badge severity-env">Environment</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Fire" onchange="applyMoreFilters()">
+                                    <span class="badge severity-fire">Fire</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-menu-divider"></div>
+
+                        <div class="filter-menu-item" onmouseenter="showSubmenu('plantsSubmenu')" onmouseleave="hideSubmenu('plantsSubmenu')">
+                            <span>Plants</span>
+                            <span class="submenu-arrow">▶</span>
+                            <div class="filter-submenu" id="plantsSubmenu">
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Alwar" onchange="applyMoreFilters()">
+                                    <span>Alwar</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Bhandara" onchange="applyMoreFilters()">
+                                    <span>Bhandara</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="CPPS" onchange="applyMoreFilters()">
+                                    <span>CPPS</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="ENR" onchange="applyMoreFilters()">
+                                    <span>ENR</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-menu-divider"></div>
+
+                        <div class="filter-menu-item" onmouseenter="showSubmenu('statusSubmenu')" onmouseleave="hideSubmenu('statusSubmenu')">
+                            <span>Status of CAPA</span>
+                            <span class="submenu-arrow">▶</span>
+                            <div class="filter-submenu" id="statusSubmenu">
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Open" onchange="applyMoreFilters()">
+                                    <span class="status-badge-inline status-open">Open</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Closed" onchange="applyMoreFilters()">
+                                    <span class="status-badge-inline status-closed">Closed</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-menu-divider"></div>
+
+                        <div class="filter-menu-item" onmouseenter="showSubmenu('approvalHDSubmenu')" onmouseleave="hideSubmenu('approvalHDSubmenu')">
+                            <span>Approval for HD</span>
+                            <span class="submenu-arrow">▶</span>
+                            <div class="filter-submenu" id="approvalHDSubmenu">
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="Yes" onchange="applyMoreFilters()">
+                                    <span class="badge status-yes">YES</span>
+                                </label>
+                                <label class="filter-checkbox-label">
+                                    <input type="checkbox" class="filter-checkbox" value="No" onchange="applyMoreFilters()">
+                                    <span class="badge status-no">NO</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-menu-divider"></div>
+
+                        <div class="filter-menu-item filter-menu-action" onclick="clearAllFilters()">
+                            <span>✕ Clear All Filters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toolbar-right-buttons">
+                <button class="horizontal-deployment-btn" onclick="openHorizontalDeployment()">Horizontal Deployment</button>
+                <button class="capa-dashboard-btn" onclick="openCapaDashboard()">CAPA Dashboard</button>
+            </div>
+
+            <div class="status-counter">
+                <span class="counter-item">
+                    Total: <strong id="totalCount">0</strong>
+                </span>
+                <span class="counter-item counter-ongoing">
+                    Open: <strong id="openCount">0</strong>
+                </span>
+                <span class="counter-item counter-completed">
+                    Closed: <strong id="closedCount">0</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="table-container" id="listView">
+            <div class="empty-state" id="emptyState">
+                <h3>No CAPAs created yet</h3>
+                <p>Click the "Create" button to add your first CAPA record</p>
+            </div>
+
+            <table id="capaTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th class="sticky-column sticky-checkbox"><input type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()"></th>
+                        <th class="sticky-column sticky-col-1">CAPA ID</th>
+                        <th class="sticky-column sticky-col-2">Plant</th>
+                        <th class="sticky-column sticky-col-3">Date</th>
+                        <th class="sticky-column sticky-col-4">Category</th>
+                        <th data-column-index="5">Incident ID</th>
+                        <th data-column-index="6">CAPA by Respective Plant</th>
+                        <th data-column-index="7">Target Date of Completion</th>
+                        <th data-column-index="8">CAPA TYPE</th>
+                        <th data-column-index="9">Status of CAPA</th>
+                        <th data-column-index="10">Approval for HD</th>
+                    </tr>
+                </thead>
+                <tbody id="capaTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="detail-panel-overlay" id="detailPanelOverlay" onclick="closeDetailPanel()"></div>
+        <div class="detail-side-panel" id="detailSidePanel">
+            <div class="detail-panel-header">
+                <h2 class="detail-panel-title" id="detailPanelTitle">CAPA Details</h2>
+                <button class="detail-panel-close" onclick="closeDetailPanel()">✕</button>
+            </div>
+            <div class="detail-panel-body" id="detailPanelBody">
+            </div>
+            <div class="detail-panel-footer">
+                <button class="detail-delete-btn" onclick="deleteCurrentCapa()">🗑️ Delete</button>
+                <div class="detail-footer-buttons">
+                    <button class="detail-cancel-btn" onclick="closeDetailPanel()">Cancel</button>
+                    <button class="detail-save-btn" onclick="saveDetailChanges()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal-overlay" id="shareModal" onclick="closeShareModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">Share CAPA Tracker</div>
+            <div class="modal-subtitle">Share this CAPA tracker with your team</div>
+            <div class="modal-field">
+                <label>People <span class="required">*</span></label>
+                <input type="email" placeholder="Enter email addresses" id="shareNames">
+                <div class="modal-info">Separate multiple emails with commas</div>
+            </div>
+            <div class="modal-field">
+                <label>Message (optional)</label>
+                <textarea placeholder="Add a message..." id="shareMessage"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="copy-link-btn" onclick="copyShareLink()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                    Copy link
+                </button>
+                <button class="share-btn" onclick="shareSearchCriteria()">Share</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create CAPA Modal -->
+    <div class="capa-modal-overlay" id="capaModalOverlay">
+        <div class="capa-modal" id="capaModal">
+            <form id="capaForm">
+                <div class="capa-modal-header">
+                    <h2>Create CAPA</h2>
+                    <div class="capa-modal-controls">
+                        <button type="button" class="capa-icon-btn" onclick="toggleFullscreenCapaModal()" title="Fullscreen">⛶</button>
+                        <button type="button" class="capa-icon-btn" onclick="closeCapaModal()">✕</button>
+                    </div>
+                </div>
+                <div class="capa-modal-body">
+                    <p class="capa-required-note">
+                        <span class="asterisk">*</span> Required fields are marked with an asterisk
+                    </p>
+
+                    <!-- CAPA ID -->
+                    <div class="capa-form-group">
+                        <label>CAPA ID</label>
+                        <input type="text" class="capa-input-field capa-auto-id-field" id="capaId" disabled>
+                        <p class="capa-helper-text">Auto-generated unique identifier</p>
+                    </div>
+
+                    <!-- PLANT -->
+                    <div class="capa-form-group">
+                        <label>Plant <span class="required">*</span></label>
+                        <select class="capa-select-field" id="capaPlant" required>
+                            <option value="">-- Select Plant --</option>
+                            <option value="Alwar">Alwar</option>
+                            <option value="Bhandara">Bhandara</option>
+                            <option value="CPPS">CPPS</option>
+                            <option value="ENR">ENR</option>
+                        </select>
+                    </div>
+
+                    <!-- DATE -->
+                    <div class="capa-form-group">
+                        <label>Date <span class="required">*</span></label>
+                        <input type="date" class="capa-input-field" id="capaDate" required>
+                    </div>
+
+                    <!-- CATEGORY -->
+                    <div class="capa-form-group">
+                        <label>Category <span class="required">*</span></label>
+                        <select class="capa-select-field" id="capaCategory" required>
+                            <option value="">-- Select Category --</option>
+                            <option value="Reportable">Reportable</option>
+                            <option value="Non-Reportable">Non-Reportable</option>
+                            <option value="First Aid">First Aid</option>
+                            <option value="Near Miss">Near Miss</option>
+                            <option value="Environment">Environment</option>
+                            <option value="Fire">Fire</option>
+                        </select>
+                    </div>
+
+                    <!-- INCIDENT ID -->
+                    <div class="capa-form-group">
+                        <label>Incident ID</label>
+                        <div class="capa-auto-or-manual">
+                            <input type="text" class="capa-input-field capa-auto-id-field" id="capaIncidentId" disabled>
+                            <label class="capa-toggle-label">
+                                <input type="checkbox" id="incidentIdNAToggle" onchange="toggleIncidentIdNA(this)">
+                                <span>Set as N/A</span>
+                            </label>
+                        </div>
+                        <p class="capa-helper-text">Auto-generated or set to N/A</p>
+                    </div>
+
+                    <!-- CAPA BY RESPECTIVE PLANT -->
+                    <div class="capa-form-group">
+                        <label>CAPA by Respective Plant <span class="required">*</span></label>
+                        <textarea class="capa-textarea-field" id="capaByPlant" placeholder="Describe CAPA actions taken by the plant..." required></textarea>
+                    </div>
+
+                    <!-- TDC -->
+                    <div class="capa-form-group">
+                        <label>TDC (Target Date of Completion) <span class="required">*</span></label>
+                        <input type="date" class="capa-input-field" id="capaTDC" required>
+                    </div>
+
+                    <!-- CAPA TYPE -->
+                    <div class="capa-form-group">
+                        <label>CAPA TYPE <span class="required">*</span></label>
+                        <select class="capa-select-field" id="capaType" required>
+                            <option value="">-- Select CAPA Type --</option>
+                            <option value="Elimination">Elimination</option>
+                            <option value="Substitution">Substitution</option>
+                            <option value="Engineering Controls">Engineering Controls</option>
+                            <option value="Administrative Controls">Administrative Controls</option>
+                            <option value="PPE">PPE</option>
+                        </select>
+                    </div>
+
+                    <!-- STATUS OF CAPA -->
+                    <div class="capa-form-group">
+                        <label>Status of CAPA <span class="required">*</span></label>
+                        <select class="capa-select-field" id="capaStatus" required>
+                            <option value="">-- Select Status --</option>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+
+                    <!-- APPROVAL FOR HD -->
+                    <div class="capa-form-group">
+                        <label>Approval for HD <span class="required">*</span></label>
+                        <select class="capa-select-field" id="capaApprovalHD" required>
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="capa-modal-footer">
+                    <label class="capa-checkbox-label">
+                        <input type="checkbox" id="createAnother">
+                        <span>Create another</span>
+                    </label>
+                    <div class="capa-footer-buttons">
+                        <button type="button" class="capa-btn-cancel" onclick="closeCapaModal()">Cancel</button>
+                        <button type="submit" class="capa-btn-submit">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- BULK DELETE FLOATING BAR -->
+    <div class="bulk-delete-bar" id="capaBulkDeleteBar">
+        <span class="bulk-count" id="capaBulkSelectedCount">0 selected</span>
+        <button class="bulk-delete-btn" onclick="deleteSelectedCapas()">
+            🗑️ Delete Selected
+        </button>
+        <button class="bulk-cancel-btn" onclick="cancelCapaBulkSelection()">✕ Cancel</button>
+    </div>
+
+    <script src="capa.js"></script>
+</body>
+</html>

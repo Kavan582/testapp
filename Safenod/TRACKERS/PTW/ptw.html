@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permit to Work</title>
+    <link rel="stylesheet" href="ptw.css">
+</head>
+<body>
+<div class="app-layout">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar" id="sidebar">
+
+    <!-- Top: Logo + collapse -->
+    <div class="sb-header">
+        <div class="sb-logo">
+            <div class="sb-logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6h0a6 6 0 0 1 6 6v3"/></svg>
+            </div>
+            <span class="sb-logo-text">SafeWork</span>
+        </div>
+        <button class="sb-collapse-btn" id="sidebarToggleBtn" onclick="toggleSidebar()" title="Collapse">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="sbCollapseIcon"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg>
+        </button>
+    </div>
+
+    <!-- New Permit -->
+    <div class="sb-new-wrap">
+        <button class="sb-new-btn" onclick="openCreateModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <span class="sb-label">New Permit</span>
+        </button>
+    </div>
+
+    <!-- Search -->
+    <div class="sb-search-wrap">
+        <svg class="sb-search-icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="sb-search" id="sidebarSearch" type="text" placeholder="Search..." oninput="filterSidebarMenu(this.value)">
+    </div>
+
+    <!-- Nav -->
+    <nav class="sb-nav" id="sidebarNav">
+
+        <div class="sb-item active" id="nav-ptw" onclick="setActivePage('ptw')" data-tooltip="Permit to Work">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+            <span class="sb-label">Permit to Work</span>
+            <span class="sb-badge" id="sbPtwBadge"></span>
+        </div>
+
+        <div class="sb-item" id="nav-incidents" onclick="setActivePage('incidents')" data-tooltip="Incident Tracker">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            <span class="sb-label">Incident Tracker</span>
+            <span class="sb-badge sb-badge-red" id="sbIncidentBadge">12</span>
+        </div>
+
+        <div class="sb-item" id="nav-capa" onclick="setActivePage('capa')" data-tooltip="CAPA Tracker">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span class="sb-label">CAPA Tracker</span>
+            <span class="sb-badge sb-badge-orange" id="sbCapaBadge">8</span>
+        </div>
+
+        <div class="sb-item" id="nav-hd" onclick="setActivePage('hd')" data-tooltip="HD Tracker">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+            <span class="sb-label">HD Tracker</span>
+        </div>
+
+        <div class="sb-item" id="nav-hira" onclick="setActivePage('hira')" data-tooltip="HIRA">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            <span class="sb-label">HIRA</span>
+        </div>
+
+        <div class="sb-item" id="nav-jsa" onclick="setActivePage('jsa')" data-tooltip="JSA">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            <span class="sb-label">JSA</span>
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <div class="sb-item" id="nav-dashboard" onclick="setActivePage('dashboard')" data-tooltip="Dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            <span class="sb-label">Dashboard</span>
+        </div>
+
+        <div class="sb-item" id="nav-settings" onclick="setActivePage('settings')" data-tooltip="Settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span class="sb-label">Settings</span>
+        </div>
+
+    </nav>
+
+    <!-- Bottom -->
+    <div class="sb-bottom">
+        <button class="sb-theme-btn" onclick="toggleDarkMode()" id="sidebarDarkBtn" data-tooltip="Toggle Theme">
+            <svg id="sbThemeIcon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            <span class="sb-label">Dark Mode</span>
+        </button>
+        <div class="sb-user" data-tooltip="Admin Profile">
+            <div class="sb-user-avatar">AD</div>
+            <div class="sb-user-info">
+                <div class="sb-user-name">Admin</div>
+                <div class="sb-user-role">Safety Officer</div>
+            </div>
+        </div>
+    </div>
+
+</aside>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="main-content" id="mainContent">
+<div class="hd-tracker">
+
+    <!-- HEADER -->
+    <!-- OVERDUE NOTIFICATION BANNER -->
+    <div class="notif-banner" id="notifBanner" style="display:none;">
+        <span class="notif-banner-icon">⚠️</span>
+        <span class="notif-banner-text" id="notifBannerText"></span>
+        <button class="notif-banner-close" onclick="dismissBanner()">✕</button>
+    </div>
+
+    <!-- NOTIFICATION DROPDOWN -->
+    <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-dropdown-header">Overdue Permits</div>
+        <div class="notif-dropdown-list" id="notifDropdownList"></div>
+    </div>
+
+    <div class="header">
+        <div class="header-left">
+            <h1 class="header-title">Permit to Work <span class="star-icon">☆</span></h1>
+        </div>
+        <div class="header-right">
+            <!-- Dark Mode Toggle -->
+            <button class="btn dark-toggle-btn" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">🌙</button>
+            <!-- Notification Bell -->
+            <div class="btn-wrapper">
+                <button class="btn notif-bell-btn" id="notifBellBtn" onclick="toggleNotifDropdown()" title="Overdue Permits">
+                    🔔 <span class="notif-bell-badge" id="notifBellBadge" style="display:none;">0</span>
+                </button>
+            </div>
+            <button class="btn btn-create-primary" onclick="openCreateModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                Create
+            </button>
+            <div class="btn-wrapper">
+                <button class="btn" onclick="toggleHeaderDropdown('appsDropdown')">Apps ▼</button>
+                <div class="header-dropdown" id="appsDropdown">
+                    <div class="header-dropdown-item" onclick="openInGoogleSheets()">📊 Open in Google Sheets</div>
+                    <div class="header-dropdown-item" onclick="openInExcel()">📊 Open in Microsoft Excel</div>
+                </div>
+            </div>
+            <div class="btn-wrapper">
+                <button class="btn" onclick="openShareModal()">Share ▼</button>
+            </div>
+            <div class="btn-wrapper">
+                <button class="btn" onclick="toggleHeaderDropdown('exportDropdown')">Export ▼</button>
+                <div class="header-dropdown" id="exportDropdown">
+                    <div class="header-dropdown-item" onclick="openPrintModal()">Print list</div>
+                    <div class="header-dropdown-item" onclick="openPrintModal()">Print details</div>
+                    <div class="header-dropdown-divider"></div>
+                    <div class="header-dropdown-item" onclick="exportXML()">Export XML</div>
+                    <div class="header-dropdown-item" onclick="exportCSV()">Export CSV</div>
+                    <div class="header-dropdown-item" onclick="exportExcel()">Export Excel</div>
+                </div>
+            </div>
+            <div class="btn-wrapper">
+                <button class="btn" onclick="toggleColumnSelector()">⚙️ Columns</button>
+                <div class="header-dropdown column-selector-dropdown" id="columnSelectorDropdown">
+                    <div class="column-selector-header">Show/Hide Columns</div>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,4)"> Time</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,5)"> Nature of Work</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,6)"> Contract Name</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,7)"> Risk Assessment</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,8)"> Type of Work</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,9)"> Persons</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,10)"> Equipment</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,11)"> Safety Instructions</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,12)"> Originator</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,13)"> Service Provider</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,14)"> Shop/Area In-charge</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,15)"> Elec/Utility Team</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,16)"> Security Team</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,17)"> Safety Officer</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,18)"> Closure - SP</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,19)"> Closure - Originator</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,20)"> Closure - Shop</label>
+                    <label class="column-checkbox"><input type="checkbox" checked onchange="toggleColumn(this,21)"> Status</label>
+                </div>
+            </div>
+            <div class="btn-wrapper">
+                <button class="btn" onclick="toggleHeaderDropdown('moreOptionsDropdown')">⋯</button>
+                <div class="header-dropdown more-options-dropdown" id="moreOptionsDropdown">
+                    <div class="header-dropdown-item" onclick="viewAsChart()">📊 View work items as a chart</div>
+                    <div class="header-dropdown-item" onclick="bulkChange()">🔄 Bulk change work items</div>
+                    <div class="header-dropdown-item" onclick="importCSVFile()">📥 Import work items from CSV</div>
+                    <div class="header-dropdown-divider"></div>
+                    <div class="header-dropdown-item" onclick="giveFeedback()">💬 Give feedback</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+        <button class="ask-ai-btn" onclick="toggleAISearch()">Ask AI</button>
+        <div class="ai-search-container" id="aiSearchContainer">
+            <div class="ai-search-box">
+                <input type="text" id="aiSearchInput" placeholder="">
+                <button class="ai-go-btn" onclick="executeAISearch()">Go →</button>
+                <button class="ai-close-btn" onclick="closeAISearch()">✕</button>
+            </div>
+        </div>
+        <div class="search-box" id="searchSection">
+            <input type="text" placeholder="Search Permit to Work" onkeyup="searchTable(this.value)">
+        </div>
+        <div class="filter-wrapper">
+            <button class="btn btn-more-filters" onclick="toggleMoreFilters()">More Filters ▼</button>
+            <div class="more-filters-dropdown" id="moreFiltersDropdown">
+                <div class="more-filters-content">
+                    <div class="filter-menu-item" onmouseenter="showSubmenu('statusSubmenu')" onmouseleave="hideSubmenu('statusSubmenu')">
+                        <span>Status</span><span class="submenu-arrow">▶</span>
+                        <div class="filter-submenu" id="statusSubmenu">
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="Open" onchange="applyMoreFilters()"><span class="badge status-open">OPEN</span></label>
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="Closed" onchange="applyMoreFilters()"><span class="badge status-closed">CLOSED</span></label>
+                        </div>
+                    </div>
+                    <div class="filter-menu-divider"></div>
+                    <div class="filter-menu-item" onmouseenter="showSubmenu('riskSubmenu')" onmouseleave="hideSubmenu('riskSubmenu')">
+                        <span>Risk Assessment</span><span class="submenu-arrow">▶</span>
+                        <div class="filter-submenu" id="riskSubmenu">
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="HIRA" onchange="applyMoreFilters()"><span>HIRA</span></label>
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="JSA" onchange="applyMoreFilters()"><span>JSA</span></label>
+                        </div>
+                    </div>
+                    <div class="filter-menu-divider"></div>
+                    <div class="filter-menu-item" onmouseenter="showSubmenu('workTypeSubmenu')" onmouseleave="hideSubmenu('workTypeSubmenu')">
+                        <span>Type of Work</span><span class="submenu-arrow">▶</span>
+                        <div class="filter-submenu" id="workTypeSubmenu">
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="General" onchange="applyMoreFilters()"><span>General</span></label>
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="Height" onchange="applyMoreFilters()"><span>Height</span></label>
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="Hot" onchange="applyMoreFilters()"><span>Hot</span></label>
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="Electrical" onchange="applyMoreFilters()"><span>Electrical</span></label>
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="Excavation" onchange="applyMoreFilters()"><span>Excavation</span></label>
+                            <label class="filter-checkbox-label"><input type="checkbox" class="filter-checkbox" value="Confined" onchange="applyMoreFilters()"><span>Confined</span></label>
+                        </div>
+                    </div>
+                    <div class="filter-menu-divider"></div>
+                    <div class="filter-menu-item filter-menu-action" onclick="clearAllFilters()"><span>✕ Clear All Filters</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar-right-buttons">
+            <button class="hd-dashboard-btn" onclick="openDashboard()">Permit to Work Dashboard</button>
+        </div>
+        <div class="status-counter">
+            <span class="counter-item">Total: <strong id="totalCount">0</strong></span>
+            <span class="counter-item counter-open">Open: <strong id="openCount">0</strong></span>
+            <span class="counter-item counter-closed">Closed: <strong id="closedCount">0</strong></span>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-container">
+        <div class="empty-state" id="emptyState">
+            <h3>No permits found</h3>
+            <p>Click the "Create" button to add your first Permit to Work</p>
+        </div>
+        <table id="ptwTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th class="sticky-col sticky-col-0"><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th>
+                    <th class="sticky-col sticky-col-1">Permit No.</th>
+                    <th class="sticky-col sticky-col-2">Date</th>
+                    <th class="sticky-col sticky-col-3">Location of Work</th>
+                    <th data-column-index="4">Time</th>
+                    <th data-column-index="5">Nature of Work</th>
+                    <th data-column-index="6">Contract Name</th>
+                    <th data-column-index="7">Risk Assessment</th>
+                    <th data-column-index="8">Type of Work</th>
+                    <th data-column-index="9">Persons</th>
+                    <th data-column-index="10">Equipment</th>
+                    <th data-column-index="11">Safety Instructions</th>
+                    <th data-column-index="12">Originator</th>
+                    <th data-column-index="13">Service Provider</th>
+                    <th data-column-index="14">Shop/Area In-charge</th>
+                    <th data-column-index="15">Elec/Utility Team</th>
+                    <th data-column-index="16">Security Team</th>
+                    <th data-column-index="17">Safety Officer</th>
+                    <th data-column-index="18">Closure - SP</th>
+                    <th data-column-index="19">Closure - Originator</th>
+                    <th data-column-index="20">Closure - Shop</th>
+                    <th data-column-index="21">Status</th>
+                    <th class="sp-col-header">💬</th>
+                </tr>
+            </thead>
+            <tbody id="ptwTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- DETAIL SIDE PANEL -->
+<div class="detail-panel-overlay" id="detailPanelOverlay" onclick="closeDetailPanel()"></div>
+<div class="detail-panel" id="detailPanel">
+    <div class="detail-panel-header">
+        <h2 class="detail-panel-title" id="detailPanelTitle">PTW-001</h2>
+        <button class="detail-close-btn" onclick="closeDetailPanel()">✕</button>
+    </div>
+    <div class="detail-panel-body">
+
+        <p class="required-note"><span class="asterisk">*</span> Required fields are marked with an asterisk</p>
+
+        <div class="form-group">
+            <label>Permit Number</label>
+            <input type="text" class="input-field auto-calc-field" id="detailPermitNo" disabled>
+        </div>
+        <div class="form-group">
+            <label>Date <span class="required">*</span></label>
+            <div class="date-input-wrapper">
+                <input type="date" class="input-field" id="detailDate" required>
+                <span class="date-icon">📅</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Time</label>
+            <div class="time-range-wrapper">
+                <div class="time-range-box">
+                    <span class="time-range-label">In Time</span>
+                    <div class="time-input-wrap">
+                        <input type="text" class="input-field time-trigger-field" id="detailTimeIn" placeholder="Select time..." readonly onclick="tpOpen(this)">
+                        <span class="time-clock-icon">🕐</span>
+                    </div>
+                </div>
+                <div class="time-range-divider">—</div>
+                <div class="time-range-box">
+                    <span class="time-range-label">Out Time</span>
+                    <div class="time-input-wrap">
+                        <input type="text" class="input-field time-trigger-field" id="detailTimeOut" placeholder="Select time..." readonly onclick="tpOpen(this)">
+                        <span class="time-clock-icon">🕐</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section-header">1. Job Section</div>
+
+        <div class="form-group">
+            <label>Location of Work <span class="required">*</span></label>
+            <input type="text" class="input-field" id="detailLocation" placeholder="Enter location of work..." required>
+        </div>
+        <div class="form-group">
+            <label>Nature of Work <span class="required">*</span></label>
+            <input type="text" class="input-field" id="detailNature" placeholder="Enter nature of work..." required>
+        </div>
+        <div class="form-group">
+            <label>Contract Name</label>
+            <input type="text" class="input-field" id="detailContract" placeholder="Enter contract name...">
+        </div>
+        <div class="form-group">
+            <label>Type of Risk Assessment Available</label>
+            <select class="select-field" id="detailRisk">
+                <option value="">-- Select --</option>
+                <option value="HIRA">HIRA</option>
+                <option value="JSA">JSA</option>
+            </select>
+        </div>
+
+        <div class="form-section-header">2. Safety Measures – Tick Applicable Type of Work and Checkpoints</div>
+
+        <div class="form-group">
+            <label>Common Guidelines <span style="font-weight:400;font-size:11px;color:#5e6c84;">(Mandatory for all type of work permit)</span></label>
+            <div class="checklist-group" id="detailCommonGuidelines">
+                <label class="checklist-item"><input type="checkbox" id="d_cg1"> Ensure the pre-inspection of the material handling equipment.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg2"> Ensure all hand tools are in good condition and properly guarded.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg3"> All electrical machines have to be certified by AL electrical team.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg4"> Usage of double insulated cables, and ELCB/RCCB (30mA) to be ensured.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg5"> All energies to be isolated, discharged and apply LOTOTO as per procedure.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg6"> All lifting equipment and tackies should have competent certificate.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg7"> Work area to be barricaded and use of caution board, as applicable.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg8"> Ensure availability of rescue person with equipment (mainly for confined space, height &amp; electrical work).</label>
+                <label class="checklist-item"><input type="checkbox" id="d_cg9"> Ensure approved Management of Change (MOC), if applicable.</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Type of Work</label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_wt_general" onchange="detailToggleWorkSection('general',this)"> General Works</label>
+                <label class="checklist-item"><input type="checkbox" id="d_wt_height" onchange="detailToggleWorkSection('height',this)"> Height Work</label>
+                <label class="checklist-item"><input type="checkbox" id="d_wt_hot" onchange="detailToggleWorkSection('hot',this)"> Hot Work</label>
+                <label class="checklist-item"><input type="checkbox" id="d_wt_electrical" onchange="detailToggleWorkSection('electrical',this)"> Electrical Work</label>
+                <label class="checklist-item"><input type="checkbox" id="d_wt_excavation" onchange="detailToggleWorkSection('excavation',this)"> Excavation Work</label>
+                <label class="checklist-item"><input type="checkbox" id="d_wt_confined" onchange="detailToggleWorkSection('confined',this)"> Confined Space Work</label>
+            </div>
+        </div>
+
+        <div class="form-group conditional-field hidden" id="d_section_general">
+            <label>General Works Checklist <span style="font-weight:400;font-size:11px;color:#5e6c84;">(Civil, Material Handling, Painting, Chemical, Calibration, Carpentry, Machine Trial)</span></label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_gw1"> Spray painting should be done with proper exhaust arrangement or ensure no other person in the vicinity.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_gw2"> Chemical cans should be properly labelled &amp; tightly closed.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_gw3"> MSDS is studied and understood the precautions.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_gw4"> Standby containers ensured for spillage-less operation.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_gw5"> Disposal if required, planned &amp; approved by environment team.</label>
+            </div>
+        </div>
+
+        <div class="form-group conditional-field hidden" id="d_section_height">
+            <label>Height Work Checklist</label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_hw1"> Only persons (&lt;50 yrs.) passed in vertigo test should carry height works.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hw2"> Scaffold must be stable with suitable supports, firm platform and stairway to access platforms.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hw3"> Use rigid lifeline/anchor point for hooking the double lanyard safety harness.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hw4"> Safety Nets, Fall Arrestors, Roof ladders, Crawler boards available.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hw5"> Ladder to be supported by other person and 3-point contact to be followed.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hw6"> Ensure Full Body Harness is certified, valid and in good condition.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hw7"> No work is getting performed below height work area.</label>
+            </div>
+        </div>
+
+        <div class="form-group conditional-field hidden" id="d_section_hot">
+            <label>Hot Work Checklist <span style="font-weight:400;font-size:11px;color:#5e6c84;">(Welding, gas cutting, grinding, chipping, drilling, brazing, soldering)</span></label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_hotw1"> Fire prone materials to be removed from the area (within 15-meter radius) or welding blanket to be used.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hotw2"> Collect all welding buds in a metal box filled with sand/water.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hotw3"> Explosive atmosphere in the area should be eliminated.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hotw4"> Fire watch will be provided during and for 60 min. after work with fire blanket and extinguisher.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_hotw5"> Flashback arrestor available and in working condition. Pressure gauge available in cylinders.</label>
+            </div>
+        </div>
+
+        <div class="form-group conditional-field hidden" id="d_section_electrical">
+            <label>Electrical Work Checklist</label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_ew1"> Engage only Licensed contractor, qualified and trained electrical worker.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_ew2"> Safety earthing procedure and LOTO Procedure is followed.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_ew3"> Wet / Damp or Conductive environment is cleared.</label>
+            </div>
+        </div>
+
+        <div class="form-group conditional-field hidden" id="d_section_excavation">
+            <label>Excavation Work Checklist</label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_exw1"> Ensure no possibility of collapse / caving in.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_exw2"> Ensure no underground cables / pipelines.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_exw3"> Escape ladder provision, if depth exceeds 4 feet.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_exw4"> Minimum distance of 1M to be maintained for vehicle, debris or equipment from excavated edge.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_exw5"> Ensure hard barricading for excavation more than 6 feet deep.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_exw6"> Check atmospheric gases level in the excavated area, if more than 6 feet deep.</label>
+            </div>
+        </div>
+
+        <div class="form-group conditional-field hidden" id="d_section_confined">
+            <label>Confined Space Work Checklist</label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_csw1"> Check atmospheric gases level before entering &amp; use air blower, if required.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_csw2"> Ensure standby person outside confined space for communication and trained in rescue procedures.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_csw3"> Ensure person entering confined space is not suffering from claustrophobia.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_csw4"> Entry &amp; Exit manholes are kept open &amp; free for access.</label>
+                <label class="checklist-item"><input type="checkbox" id="d_csw5"> Ensure the confinement is fit for hot work if required.</label>
+            </div>
+        </div>
+
+        <div class="form-section-header">3. Persons Involved in Work</div>
+        <div id="detailPersonsContainer">
+            <div class="form-group person-row">
+                <label>Person 1</label>
+                <div class="person-input-row">
+                    <input type="text" class="input-field person-input" placeholder="Enter name...">
+                    <button type="button" class="person-remove-btn" onclick="removePersonRow(this)" style="display:none;">−</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="person-add-btn" onclick="addDetailPersonRow()">+ Add Person</button>
+
+        <div class="form-section-header">Safety Equipment Checks</div>
+        <div class="form-group">
+            <label>Electrical Equipment Valid Up To</label>
+            <div class="date-input-wrapper"><input type="date" class="input-field" id="detailElecEquipDate"><span class="date-icon">📅</span></div>
+        </div>
+        <div class="form-group"><label>Safety Belt Number</label><input type="text" class="input-field" id="detailSafetyBelt" placeholder="Enter safety belt number..."></div>
+        <div class="form-group"><label>LOTO Lock Number</label><input type="text" class="input-field" id="detailLoto" placeholder="Enter LOTO lock number..."></div>
+        <div class="form-group"><label>Ladder Number</label><input type="text" class="input-field" id="detailLadder" placeholder="Enter ladder number..."></div>
+        <div class="form-group">
+            <label>Electrical Gloves Valid Up To</label>
+            <div class="date-input-wrapper"><input type="date" class="input-field" id="detailGlovesDate"><span class="date-icon">📅</span></div>
+        </div>
+        <div class="form-group"><label>MHEs Tested On (Competent Person)</label><input type="text" class="input-field" id="detailMhes" placeholder="Enter competent person name..."></div>
+
+        <div class="form-section-header">Gas Level Monitoring</div>
+        <div class="form-group"><label>O₂ Level</label><input type="text" class="input-field" id="detailO2" placeholder="Normal range: 19.5 to 23.5%"></div>
+        <div class="form-group"><label>CO Level</label><input type="text" class="input-field" id="detailCO" placeholder="Normal: &lt;50 PPM"></div>
+        <div class="form-group"><label>H₂S Level</label><input type="text" class="input-field" id="detailH2S" placeholder="Normal: &lt;10 PPM"></div>
+        <div class="form-group"><label>Flammable Gas LEL</label><input type="text" class="input-field" id="detailFlamGas" placeholder="Normal: &lt;10% LEL"></div>
+
+        <div class="form-section-header">Equipment Required</div>
+        <div class="form-group">
+            <label>Select Required Equipment</label>
+            <div class="checklist-group">
+                <label class="checklist-item"><input type="checkbox" id="d_eq_helmet"> Helmet</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_gloves"> Gloves</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_goggles"> Goggles / Shield</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_safetybelt"> Safety Belt</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_earplugs"> Ear Plugs / Muff</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_scba"> SCBA</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_mask"> Mask</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_lamp"> 24V Lamp</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_tripod"> Tripod System</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_arcflash"> Arc Flash Suit</label>
+                <label class="checklist-item"><input type="checkbox" id="d_eq_other_cb" onchange="toggleOtherEquip('detailEqOther','d_eq_other_cb')"> Other</label>
+                <div class="other-equip-input hidden" id="d_eq_other_wrap">
+                    <input type="text" class="input-field" id="detailEqOther" placeholder="Specify other equipment...">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section-header">Safety Instructions</div>
+        <div class="form-group"><label>Safety Instructions</label><textarea class="textarea-field" id="detailSafetyInstructions" placeholder="Enter any additional safety instructions..."></textarea></div>
+
+        <div class="form-section-header">4. Authorization Panel</div>
+        <div class="auth-grid">
+            <div class="auth-box">
+                <div class="auth-box-title">1. Originator</div>
+                <p class="auth-box-desc">I ensure effective supervision of the specified work and issue this permit subject to the clearance made as specified in this permit.</p>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_auth_orig_name" placeholder="Enter name..."></div>
+                <div class="form-group"><label>Dept.</label><input type="text" class="input-field" id="d_auth_orig_dept" placeholder="Enter department..."></div>
+                <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_auth_orig_sign" placeholder="Enter signature..."></div>
+            </div>
+            <div class="auth-box">
+                <div class="auth-box-title">2. Service Provider</div>
+                <p class="auth-box-desc">I have read and understood the permit &amp; will carry-out the precautions mentioned in the field.</p>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_auth_sp_name" placeholder="Enter name..."></div>
+                <div class="form-group"><label>Contract Name</label><input type="text" class="input-field" id="d_auth_sp_contract" placeholder="Enter contract name..."></div>
+                <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_auth_sp_sign" placeholder="Enter signature..."></div>
+            </div>
+            <div class="auth-box">
+                <div class="auth-box-title">3. Shop/Area In-charge Clearance</div>
+                <p class="auth-box-desc">I have checked the location/work spot, no parallel activities (e.g., hot work &amp; paint work) and give clearance.</p>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_auth_shop_name" placeholder="Enter name..."></div>
+                <div class="form-group"><label>Dept.</label><input type="text" class="input-field" id="d_auth_shop_dept" placeholder="Enter department..."></div>
+                <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_auth_shop_sign" placeholder="Enter signature..."></div>
+                <div class="auth-ana-row"><button type="button" class="ana-btn" id="d_auth_shop_ana" onclick="toggleANA(this)">A / NA</button></div>
+            </div>
+            <div class="auth-box">
+                <div class="auth-box-title">4. Electrical/Utility/Civil Team</div>
+                <p class="auth-box-desc">I have verified and isolated power and pipelines in the work area and under the ground, in case of excavation.</p>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_auth_elec_name" placeholder="Enter name..."></div>
+                <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_auth_elec_sign" placeholder="Enter signature..."></div>
+                <div class="auth-ana-row"><button type="button" class="ana-btn" id="d_auth_elec_ana" onclick="toggleANA(this)">A / NA</button></div>
+            </div>
+            <div class="auth-box">
+                <div class="auth-box-title">5. Security Team</div>
+                <p class="auth-box-desc">We have deployed security personnel for monitoring the work and/or as fire watcher along with the fire extinguisher.</p>
+                <div class="form-group"><label>Fire Watcher Name</label><input type="text" class="input-field" id="d_auth_sec_fw_name" placeholder="Enter fire watcher name..."></div>
+                <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_auth_sec_sign" placeholder="Enter signature..."></div>
+                <div class="auth-ana-row"><button type="button" class="ana-btn" id="d_auth_sec_ana" onclick="toggleANA(this)">A / NA</button></div>
+            </div>
+            <div class="auth-box">
+                <div class="auth-box-title">6. Safety Officer</div>
+                <p class="auth-box-desc">I have verified the safety measures taken.</p>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_auth_safety_name" placeholder="Enter name..."></div>
+                <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_auth_safety_sign" placeholder="Enter signature..."></div>
+            </div>
+        </div>
+
+        <div class="form-section-header closure-header">Work Permit Closure</div>
+        <div class="closure-para">I have inspected the work area and confirmed that the task has been completed. Housekeeping has been carried out, and there are no post-work hazards present.</div>
+        <div class="form-group">
+            <label>Nos. of Contractor / Service Provider Person (S. No. 3) Available During Closure</label>
+            <input type="text" class="input-field" id="d_closure_contractor_nos" placeholder="Enter number of persons...">
+        </div>
+        <div class="closure-sig-grid">
+            <div class="closure-sig-box">
+                <div class="closure-sig-title">1. Service Provider Authority Name</div>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_closure_sp_name" placeholder="Enter name..."></div>
+                <div class="closure-sig-row">
+                    <div class="form-group"><label>Time</label><input type="text" class="input-field time-trigger-field" id="d_closure_sp_time" placeholder="Select time..." readonly onclick="tpOpen(this)"></div>
+                    <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_closure_sp_sign" placeholder="Signature..."></div>
+                </div>
+            </div>
+            <div class="closure-sig-box">
+                <div class="closure-sig-title">2. Originator Name</div>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_closure_orig_name" placeholder="Enter name..."></div>
+                <div class="closure-sig-row">
+                    <div class="form-group"><label>Time</label><input type="text" class="input-field time-trigger-field" id="d_closure_orig_time" placeholder="Select time..." readonly onclick="tpOpen(this)"></div>
+                    <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_closure_orig_sign" placeholder="Signature..."></div>
+                </div>
+            </div>
+            <div class="closure-sig-box">
+                <div class="closure-sig-title">3. Shop/Area In-charge Name</div>
+                <p class="closure-sig-note">Applicable only if applicable at the time of initiation.</p>
+                <div class="form-group"><label>Name</label><input type="text" class="input-field" id="d_closure_shop_name" placeholder="Enter name..."></div>
+                <div class="closure-sig-row">
+                    <div class="form-group"><label>Time</label><input type="text" class="input-field time-trigger-field" id="d_closure_shop_time" placeholder="Select time..." readonly onclick="tpOpen(this)"></div>
+                    <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="d_closure_shop_sign" placeholder="Signature..."></div>
+                </div>
+                <div class="auth-ana-row"><button type="button" class="ana-btn" id="d_closure_shop_ana" onclick="toggleANA(this)">A / NA</button></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Status <span class="required">*</span></label>
+            <select class="select-field" id="detailStatus" required>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+            </select>
+        </div>
+
+    </div>
+    <div class="detail-panel-footer">
+        <button class="btn-detail-delete" onclick="deleteCurrentPTW()">🗑️ Delete</button>
+        <div class="detail-footer-actions">
+            <button class="btn-detail-cancel" onclick="closeDetailPanel()">Cancel</button>
+            <button class="btn-detail-save" onclick="saveDetail()">Save</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- CREATE MODAL -->
+<div class="create-modal-overlay" id="createModalOverlay">
+    <div class="create-modal" id="createModal">
+        <form id="ptwForm">
+            <div class="create-modal-header">
+                <h2>Create Permit to Work</h2>
+                <div class="modal-controls">
+                    <button type="button" class="icon-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
+                    <button type="button" class="icon-btn" onclick="closeCreateModal()">✕</button>
+                </div>
+            </div>
+            <div class="create-modal-body">
+                <p class="required-note"><span class="asterisk">*</span> Required fields are marked with an asterisk</p>
+
+                <div class="form-group">
+                    <label>Permit Number</label>
+                    <input type="text" class="input-field auto-calc-field" id="permitNo" disabled>
+                    <p class="helper-text">Auto-generated unique identifier</p>
+                </div>
+                <div class="form-group">
+                    <label>Date <span class="required">*</span></label>
+                    <div class="date-input-wrapper">
+                        <input type="date" class="input-field" id="permitDate" required>
+                        <span class="date-icon">📅</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <div class="time-range-wrapper">
+                        <div class="time-range-box">
+                            <span class="time-range-label">In Time</span>
+                            <div class="time-input-wrap">
+                                <input type="text" class="input-field time-trigger-field" id="permitTimeIn" placeholder="Select time..." readonly onclick="tpOpen(this)">
+                                <span class="time-clock-icon">🕐</span>
+                            </div>
+                        </div>
+                        <div class="time-range-divider">—</div>
+                        <div class="time-range-box">
+                            <span class="time-range-label">Out Time</span>
+                            <div class="time-input-wrap">
+                                <input type="text" class="input-field time-trigger-field" id="permitTimeOut" placeholder="Select time..." readonly onclick="tpOpen(this)">
+                                <span class="time-clock-icon">🕐</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-header">1. Job Section</div>
+
+                <div class="form-group">
+                    <label>Location of Work <span class="required">*</span></label>
+                    <input type="text" class="input-field" id="locationOfWork" placeholder="Enter location of work..." required>
+                </div>
+                <div class="form-group">
+                    <label>Nature of Work <span class="required">*</span></label>
+                    <input type="text" class="input-field" id="natureOfWork" placeholder="Enter nature of work..." required>
+                </div>
+                <div class="form-group">
+                    <label>Contract Name</label>
+                    <input type="text" class="input-field" id="contractName" placeholder="Enter contract name...">
+                </div>
+                <div class="form-group">
+                    <label>Type of Risk Assessment Available</label>
+                    <select class="select-field" id="riskAssessment">
+                        <option value="">-- Select --</option>
+                        <option value="HIRA">HIRA</option>
+                        <option value="JSA">JSA</option>
+                    </select>
+                </div>
+
+                <div class="form-section-header">2. Safety Measures – Tick Applicable Type of Work and Checkpoints</div>
+
+                <div class="form-group">
+                    <label>Common Guidelines <span style="font-weight:400;font-size:11px;color:#5e6c84;">(Mandatory for all type of work permit)</span></label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="cg1"> Ensure the pre-inspection of the material handling equipment.</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg2"> Ensure all hand tools are in good condition and properly guarded.</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg3"> All electrical machines have to be certified by AL electrical team.</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg4"> Usage of double insulated cables, and ELCB/RCCB (30mA) to be ensured.</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg5"> All energies to be isolated, discharged and apply LOTOTO as per procedure.</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg6"> All lifting equipment and tackies should have competent certificate.</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg7"> Work area to be barricaded and use of caution board, as applicable.</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg8"> Ensure availability of rescue person with equipment (mainly for confined space, height &amp; electrical work).</label>
+                        <label class="checklist-item"><input type="checkbox" id="cg9"> Ensure approved Management of Change (MOC), if applicable.</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Type of Work</label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="wt_general" onchange="toggleWorkSection('general',this)"> General Works</label>
+                        <label class="checklist-item"><input type="checkbox" id="wt_height" onchange="toggleWorkSection('height',this)"> Height Work</label>
+                        <label class="checklist-item"><input type="checkbox" id="wt_hot" onchange="toggleWorkSection('hot',this)"> Hot Work</label>
+                        <label class="checklist-item"><input type="checkbox" id="wt_electrical" onchange="toggleWorkSection('electrical',this)"> Electrical Work</label>
+                        <label class="checklist-item"><input type="checkbox" id="wt_excavation" onchange="toggleWorkSection('excavation',this)"> Excavation Work</label>
+                        <label class="checklist-item"><input type="checkbox" id="wt_confined" onchange="toggleWorkSection('confined',this)"> Confined Space Work</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field hidden" id="section_general">
+                    <label>General Works Checklist <span style="font-weight:400;font-size:11px;color:#5e6c84;">(Civil, Material Handling, Painting, Chemical, Calibration, Carpentry, Machine Trial)</span></label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="gw1"> Spray painting should be done with proper exhaust arrangement or ensure no other person in the vicinity.</label>
+                        <label class="checklist-item"><input type="checkbox" id="gw2"> Chemical cans should be properly labelled &amp; tightly closed.</label>
+                        <label class="checklist-item"><input type="checkbox" id="gw3"> MSDS is studied and understood the precautions.</label>
+                        <label class="checklist-item"><input type="checkbox" id="gw4"> Standby containers ensured for spillage-less operation.</label>
+                        <label class="checklist-item"><input type="checkbox" id="gw5"> Disposal if required, planned &amp; approved by environment team.</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field hidden" id="section_height">
+                    <label>Height Work Checklist</label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="hw1"> Only persons (&lt;50 yrs.) passed in vertigo test should carry height works.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hw2"> Scaffold must be stable with suitable supports, firm platform and stairway to access platforms.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hw3"> Use rigid lifeline/anchor point for hooking the double lanyard safety harness.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hw4"> Safety Nets, Fall Arrestors, Roof ladders, Crawler boards available.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hw5"> Ladder to be supported by other person and 3-point contact to be followed.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hw6"> Ensure Full Body Harness is certified, valid and in good condition.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hw7"> No work is getting performed below height work area.</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field hidden" id="section_hot">
+                    <label>Hot Work Checklist <span style="font-weight:400;font-size:11px;color:#5e6c84;">(Welding, gas cutting, grinding, chipping, drilling, brazing, soldering)</span></label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="hotw1"> Fire prone materials to be removed from the area (within 15-meter radius) or welding blanket to be used.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hotw2"> Collect all welding buds in a metal box filled with sand/water.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hotw3"> Explosive atmosphere in the area should be eliminated.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hotw4"> Fire watch will be provided during and for 60 min. after work with fire blanket and extinguisher.</label>
+                        <label class="checklist-item"><input type="checkbox" id="hotw5"> Flashback arrestor available and in working condition. Pressure gauge available in cylinders.</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field hidden" id="section_electrical">
+                    <label>Electrical Work Checklist</label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="ew1"> Engage only Licensed contractor, qualified and trained electrical worker.</label>
+                        <label class="checklist-item"><input type="checkbox" id="ew2"> Safety earthing procedure and LOTO Procedure is followed.</label>
+                        <label class="checklist-item"><input type="checkbox" id="ew3"> Wet / Damp or Conductive environment is cleared.</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field hidden" id="section_excavation">
+                    <label>Excavation Work Checklist</label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="exw1"> Ensure no possibility of collapse / caving in.</label>
+                        <label class="checklist-item"><input type="checkbox" id="exw2"> Ensure no underground cables / pipelines.</label>
+                        <label class="checklist-item"><input type="checkbox" id="exw3"> Escape ladder provision, if depth exceeds 4 feet.</label>
+                        <label class="checklist-item"><input type="checkbox" id="exw4"> Minimum distance of 1M to be maintained for vehicle, debris or equipment from excavated edge.</label>
+                        <label class="checklist-item"><input type="checkbox" id="exw5"> Ensure hard barricading for excavation more than 6 feet deep.</label>
+                        <label class="checklist-item"><input type="checkbox" id="exw6"> Check atmospheric gases level in the excavated area, if more than 6 feet deep.</label>
+                    </div>
+                </div>
+
+                <div class="form-group conditional-field hidden" id="section_confined">
+                    <label>Confined Space Work Checklist</label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="csw1"> Check atmospheric gases level before entering &amp; use air blower, if required.</label>
+                        <label class="checklist-item"><input type="checkbox" id="csw2"> Ensure standby person outside confined space for communication and trained in rescue procedures.</label>
+                        <label class="checklist-item"><input type="checkbox" id="csw3"> Ensure person entering confined space is not suffering from claustrophobia.</label>
+                        <label class="checklist-item"><input type="checkbox" id="csw4"> Entry &amp; Exit manholes are kept open &amp; free for access.</label>
+                        <label class="checklist-item"><input type="checkbox" id="csw5"> Ensure the confinement is fit for hot work if required.</label>
+                    </div>
+                </div>
+
+                <div class="form-section-header">3. Persons Involved in Work</div>
+                <div id="personsContainer">
+                    <div class="form-group person-row">
+                        <label>Person 1</label>
+                        <div class="person-input-row">
+                            <input type="text" class="input-field person-input" placeholder="Enter name...">
+                            <button type="button" class="person-remove-btn" onclick="removePersonRow(this)" style="display:none;">−</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="person-add-btn" onclick="addPersonRow()">+ Add Person</button>
+
+                <div class="form-section-header">Safety Equipment Checks</div>
+                <div class="form-group">
+                    <label>Electrical Equipment Valid Up To</label>
+                    <div class="date-input-wrapper"><input type="date" class="input-field" id="electricalEquipDate"><span class="date-icon">📅</span></div>
+                </div>
+                <div class="form-group"><label>Safety Belt Number</label><input type="text" class="input-field" id="safetyBeltNo" placeholder="Enter safety belt number..."></div>
+                <div class="form-group"><label>LOTO Lock Number</label><input type="text" class="input-field" id="lotoLockNo" placeholder="Enter LOTO lock number..."></div>
+                <div class="form-group"><label>Ladder Number</label><input type="text" class="input-field" id="ladderNo" placeholder="Enter ladder number..."></div>
+                <div class="form-group">
+                    <label>Electrical Gloves Valid Up To</label>
+                    <div class="date-input-wrapper"><input type="date" class="input-field" id="electricalGlovesDate"><span class="date-icon">📅</span></div>
+                </div>
+                <div class="form-group"><label>MHEs Tested On (Competent Person)</label><input type="text" class="input-field" id="mhesTested" placeholder="Enter competent person name..."></div>
+
+                <div class="form-section-header">Gas Level Monitoring</div>
+                <div class="form-group"><label>O₂ Level</label><input type="text" class="input-field" id="o2Level" placeholder="Normal range: 19.5 to 23.5%"></div>
+                <div class="form-group"><label>CO Level</label><input type="text" class="input-field" id="coLevel" placeholder="Normal: &lt;50 PPM"></div>
+                <div class="form-group"><label>H₂S Level</label><input type="text" class="input-field" id="h2sLevel" placeholder="Normal: &lt;10 PPM"></div>
+                <div class="form-group"><label>Flammable Gas LEL</label><input type="text" class="input-field" id="flamGasLevel" placeholder="Normal: &lt;10% LEL"></div>
+
+                <div class="form-section-header">Equipment Required</div>
+                <div class="form-group">
+                    <label>Select Required Equipment</label>
+                    <div class="checklist-group">
+                        <label class="checklist-item"><input type="checkbox" id="eq_helmet"> Helmet</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_gloves"> Gloves</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_goggles"> Goggles / Shield</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_safetybelt"> Safety Belt</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_earplugs"> Ear Plugs / Muff</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_scba"> SCBA</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_mask"> Mask</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_lamp"> 24V Lamp</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_tripod"> Tripod System</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_arcflash"> Arc Flash Suit</label>
+                        <label class="checklist-item"><input type="checkbox" id="eq_other_cb" onchange="toggleOtherEquip('eq_other','eq_other_cb')"> Other</label>
+                        <div class="other-equip-input hidden" id="eq_other_wrap">
+                            <input type="text" class="input-field" id="eq_other" placeholder="Specify other equipment...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-header">Safety Instructions</div>
+                <div class="form-group"><label>Safety Instructions</label><textarea class="textarea-field" id="safetyInstructions" placeholder="Enter any additional safety instructions..."></textarea></div>
+
+                <!-- ── AUTHORIZATION SECTION ── -->
+                <div class="form-section-header">4. Authorization Panel</div>
+
+                <!-- 6-box Authorization Grid -->
+                <div class="auth-grid">
+                    <!-- Box 1: Originator -->
+                    <div class="auth-box">
+                        <div class="auth-box-title">1. Originator</div>
+                        <p class="auth-box-desc">I ensure effective supervision of the specified work and issue this permit subject to the clearance made as specified in this permit.</p>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="auth_orig_name" placeholder="Enter name..."></div>
+                        <div class="form-group"><label>Dept.</label><input type="text" class="input-field" id="auth_orig_dept" placeholder="Enter department..."></div>
+                        <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="auth_orig_sign" placeholder="Enter signature..."></div>
+                    </div>
+                    <!-- Box 2: Service Provider -->
+                    <div class="auth-box">
+                        <div class="auth-box-title">2. Service Provider</div>
+                        <p class="auth-box-desc">I have read and understood the permit &amp; will carry-out the precautions mentioned in the field.</p>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="auth_sp_name" placeholder="Enter name..."></div>
+                        <div class="form-group"><label>Contract Name</label><input type="text" class="input-field" id="auth_sp_contract" placeholder="Enter contract name..."></div>
+                        <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="auth_sp_sign" placeholder="Enter signature..."></div>
+                    </div>
+                    <!-- Box 3: Shop/Area In-charge -->
+                    <div class="auth-box">
+                        <div class="auth-box-title">3. Shop/Area In-charge Clearance</div>
+                        <p class="auth-box-desc">I have checked the location/work spot, no parallel activities (e.g., hot work &amp; paint work) and give clearance.</p>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="auth_shop_name" placeholder="Enter name..."></div>
+                        <div class="form-group"><label>Dept.</label><input type="text" class="input-field" id="auth_shop_dept" placeholder="Enter department..."></div>
+                        <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="auth_shop_sign" placeholder="Enter signature..."></div>
+                        <div class="auth-ana-row">
+                            <button type="button" class="ana-btn" id="auth_shop_ana" onclick="toggleANA(this)">A / NA</button>
+                        </div>
+                    </div>
+                    <!-- Box 4: Electrical/Utility/Civil Team -->
+                    <div class="auth-box">
+                        <div class="auth-box-title">4. Electrical/Utility/Civil Team</div>
+                        <p class="auth-box-desc">I have verified and isolated power and pipelines in the work area and under the ground, in case of excavation.</p>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="auth_elec_name" placeholder="Enter name..."></div>
+                        <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="auth_elec_sign" placeholder="Enter signature..."></div>
+                        <div class="auth-ana-row">
+                            <button type="button" class="ana-btn" id="auth_elec_ana" onclick="toggleANA(this)">A / NA</button>
+                        </div>
+                    </div>
+                    <!-- Box 5: Security Team -->
+                    <div class="auth-box">
+                        <div class="auth-box-title">5. Security Team</div>
+                        <p class="auth-box-desc">We have deployed security personnel for monitoring the work and/or as fire watcher along with the fire extinguisher.</p>
+                        <div class="form-group"><label>Fire Watcher Name</label><input type="text" class="input-field" id="auth_sec_fw_name" placeholder="Enter fire watcher name..."></div>
+                        <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="auth_sec_sign" placeholder="Enter signature..."></div>
+                        <div class="auth-ana-row">
+                            <button type="button" class="ana-btn" id="auth_sec_ana" onclick="toggleANA(this)">A / NA</button>
+                        </div>
+                    </div>
+                    <!-- Box 6: Safety Officer -->
+                    <div class="auth-box">
+                        <div class="auth-box-title">6. Safety Officer</div>
+                        <p class="auth-box-desc">I have verified the safety measures taken.</p>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="auth_safety_name" placeholder="Enter name..."></div>
+                        <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="auth_safety_sign" placeholder="Enter signature..."></div>
+                    </div>
+                </div>
+
+                <!-- Work Permit Closure -->
+                <div class="form-section-header closure-header">Work Permit Closure</div>
+                <div class="closure-para">
+                    I have inspected the work area and confirmed that the task has been completed. Housekeeping has been carried out, and there are no post-work hazards present.
+                </div>
+                <div class="form-group">
+                    <label>Nos. of Contractor / Service Provider Person (S. No. 3) Available During Closure</label>
+                    <input type="text" class="input-field" id="closure_contractor_nos" placeholder="Enter number of persons...">
+                </div>
+
+                <!-- Closure Signatures (3-column blue) -->
+                <div class="closure-sig-grid">
+                    <div class="closure-sig-box">
+                        <div class="closure-sig-title">1. Service Provider Authority Name</div>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="closure_sp_name" placeholder="Enter name..."></div>
+                        <div class="closure-sig-row">
+                            <div class="form-group"><label>Time</label><input type="text" class="input-field time-trigger-field" id="closure_sp_time" placeholder="Select time..." readonly onclick="tpOpen(this)"></div>
+                            <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="closure_sp_sign" placeholder="Signature..."></div>
+                        </div>
+                    </div>
+                    <div class="closure-sig-box">
+                        <div class="closure-sig-title">2. Originator Name</div>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="closure_orig_name" placeholder="Enter name..."></div>
+                        <div class="closure-sig-row">
+                            <div class="form-group"><label>Time</label><input type="text" class="input-field time-trigger-field" id="closure_orig_time" placeholder="Select time..." readonly onclick="tpOpen(this)"></div>
+                            <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="closure_orig_sign" placeholder="Signature..."></div>
+                        </div>
+                    </div>
+                    <div class="closure-sig-box">
+                        <div class="closure-sig-title">3. Shop/Area In-charge Name</div>
+                        <p class="closure-sig-note">Applicable only if applicable at the time of initiation.</p>
+                        <div class="form-group"><label>Name</label><input type="text" class="input-field" id="closure_shop_name" placeholder="Enter name..."></div>
+                        <div class="closure-sig-row">
+                            <div class="form-group"><label>Time</label><input type="text" class="input-field time-trigger-field" id="closure_shop_time" placeholder="Select time..." readonly onclick="tpOpen(this)"></div>
+                            <div class="form-group"><label>Signature</label><input type="text" class="input-field" id="closure_shop_sign" placeholder="Signature..."></div>
+                        </div>
+                        <div class="auth-ana-row">
+                            <button type="button" class="ana-btn" id="closure_shop_ana" onclick="toggleANA(this)">A / NA</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Status <span class="required">*</span></label>
+                    <select class="select-field" id="statusPTW" required>
+                        <option value="Open">Open</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="create-modal-footer">
+                <label class="checkbox-label"><input type="checkbox" id="createAnother"><span>Create another</span></label>
+                <div class="footer-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeCreateModal()">Cancel</button>
+                    <button type="submit" class="btn-create">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="share-modal-overlay" id="shareModalOverlay">
+    <div class="modal-content">
+        <div class="modal-header">Share Permit to Work</div>
+        <div class="modal-subtitle">Share this tracker with your team</div>
+        <div class="modal-field">
+            <label>People <span class="required">*</span></label>
+            <input type="email" placeholder="Enter email addresses" id="shareEmail">
+            <p class="modal-info">Separate multiple emails with commas</p>
+        </div>
+        <div class="modal-field">
+            <label>Message (optional)</label>
+            <textarea placeholder="Add a message..." id="shareMessage"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="copy-link-btn" onclick="copyLink()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                Copy link
+            </button>
+            <button class="share-btn" onclick="sendShare()">Share</button>
+        </div>
+    </div>
+</div>
+
+<!-- TIME PICKER POPUP -->
+<div class="time-picker-overlay" id="tpOverlay" onclick="tpClickOutside(event)"></div>
+<div class="time-picker-popup" id="tpPopup" style="display:none;">
+    <div class="time-picker-label">ENTER TIME</div>
+    <div class="time-picker-row">
+        <div class="tp-box active" id="tpHourBox" onclick="tpFocus('hour')">
+            <input type="number" id="tpHourInput" value="12" min="1" max="12"
+                oninput="tpValidate('hour')" onfocus="tpFocus('hour')" onkeydown="tpKey(event,'hour')">
+            <div class="tp-scroll-btns">
+                <button class="tp-arrow" onclick="tpStep('hour',1)">▲</button>
+                <button class="tp-arrow" onclick="tpStep('hour',-1)">▼</button>
+            </div>
+        </div>
+        <div class="tp-colon">:</div>
+        <div class="tp-box" id="tpMinBox" onclick="tpFocus('min')">
+            <input type="number" id="tpMinInput" value="00" min="0" max="59"
+                oninput="tpValidate('min')" onfocus="tpFocus('min')" onkeydown="tpKey(event,'min')">
+            <div class="tp-scroll-btns">
+                <button class="tp-arrow" onclick="tpStep('min',1)">▲</button>
+                <button class="tp-arrow" onclick="tpStep('min',-1)">▼</button>
+            </div>
+        </div>
+        <div class="tp-period-col">
+            <button class="tp-period-btn active" id="tpAM" onclick="tpSetPeriod('AM')">AM</button>
+            <button class="tp-period-btn" id="tpPM" onclick="tpSetPeriod('PM')">PM</button>
+        </div>
+    </div>
+    <div class="time-picker-row" style="gap:0;margin-bottom:0;">
+        <div style="width:88px;text-align:center;font-size:11px;color:#999;">Hour</div>
+        <div style="width:20px;"></div>
+        <div style="width:88px;text-align:center;font-size:11px;color:#999;">Minute</div>
+    </div>
+    <div class="tp-footer">
+        <button class="tp-btn-cancel" onclick="tpCancel()">CANCEL</button>
+        <button class="tp-btn-ok" onclick="tpOK()">OK</button>
+    </div>
+</div>
+
+<!-- ── SIDE PANEL OVERLAY ── -->
+<div class="sidepanel-overlay" id="sidePanelOverlay" onclick="closeSidePanel()"></div>
+
+<!-- ── SIDE PANEL ── -->
+<div class="side-panel" id="sidePanel">
+    <div class="side-panel-header">
+        <div>
+            <div class="side-panel-permit-no" id="sidePanelPermitNo">PTW-001</div>
+            <div class="side-panel-subtitle" id="sidePanelSubtitle">Comments &amp; Activity</div>
+        </div>
+        <button class="side-panel-close" onclick="closeSidePanel()">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="side-panel-tabs">
+        <button class="sp-tab active" id="tabComments" onclick="switchSPTab('comments')">💬 Comments <span class="sp-tab-count" id="commentsCount">0</span></button>
+        <button class="sp-tab" id="tabActivity" onclick="switchSPTab('activity')">📋 Activity Log <span class="sp-tab-count" id="activityCount">0</span></button>
+    </div>
+
+    <!-- Comments Tab -->
+    <div class="sp-tab-content" id="spComments">
+        <div class="sp-comments-list" id="spCommentsList">
+            <div class="sp-empty">No comments yet. Be the first to add one!</div>
+        </div>
+        <div class="sp-comment-input-area">
+            <textarea class="sp-comment-textarea" id="spCommentInput" placeholder="Write a comment..."></textarea>
+            <div class="sp-comment-actions">
+                <span class="sp-comment-hint">Press Ctrl+Enter to submit</span>
+                <button class="sp-submit-btn" onclick="submitComment()">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Log Tab -->
+    <div class="sp-tab-content hidden" id="spActivity">
+        <div class="sp-activity-list" id="spActivityList">
+            <div class="sp-empty">No activity recorded yet.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ── GLOBAL SEARCH OVERLAY ── -->
+<div class="gsearch-overlay" id="gSearchOverlay" onclick="closeGlobalSearch()"></div>
+<div class="gsearch-modal" id="gSearchModal">
+    <div class="gsearch-input-row">
+        <span class="gsearch-icon">🔍</span>
+        <input type="text" class="gsearch-input" id="gSearchInput" placeholder="Search permits — PTW No, Location, Nature of Work, Contractor..." oninput="runGlobalSearch(this.value)" onkeydown="gSearchKeyNav(event)">
+        <span class="gsearch-shortcut">ESC</span>
+    </div>
+    <div class="gsearch-body" id="gSearchBody">
+        <div class="gsearch-recents" id="gSearchRecents"></div>
+    </div>
+</div>
+
+<!-- ── PRINT PREVIEW MODAL ── -->
+<div class="print-modal-overlay" id="printModalOverlay">
+    <div class="print-modal">
+        <div class="print-modal-header">
+            <div>
+                <div class="print-modal-title">🖨️ Print / Export PDF</div>
+                <div class="print-modal-sub">Choose what to print</div>
+            </div>
+            <button class="print-modal-close" onclick="closePrintModal()">✕</button>
+        </div>
+        <div class="print-options">
+            <label class="print-option-card">
+                <input type="radio" name="printType" value="list" checked>
+                <div class="print-option-content">
+                    <div class="print-option-icon">📋</div>
+                    <div class="print-option-label">List View</div>
+                    <div class="print-option-desc">Table with all permits</div>
+                </div>
+            </label>
+            <label class="print-option-card">
+                <input type="radio" name="printType" value="open">
+                <div class="print-option-content">
+                    <div class="print-option-icon">🟡</div>
+                    <div class="print-option-label">Open Permits Only</div>
+                    <div class="print-option-desc">Only active permits</div>
+                </div>
+            </label>
+            <label class="print-option-card">
+                <input type="radio" name="printType" value="closed">
+                <div class="print-option-content">
+                    <div class="print-option-icon">✅</div>
+                    <div class="print-option-label">Closed Permits Only</div>
+                    <div class="print-option-desc">Completed permits</div>
+                </div>
+            </label>
+        </div>
+        <div class="print-modal-footer">
+            <button class="btn" onclick="closePrintModal()">Cancel</button>
+            <button class="btn btn-create-primary" onclick="executePrint()">🖨️ Print / Save as PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- BULK DELETE BAR -->
+<div class="bulk-delete-bar" id="bulkDeleteBar">
+    <span class="bulk-count" id="bulkSelectedCount">0 selected</span>
+    <button class="bulk-delete-btn" onclick="deleteSelectedRows()">🗑️ Delete Selected</button>
+    <button class="bulk-cancel-btn" onclick="cancelBulkSelection()">✕ Cancel</button>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /app-layout -->
+<script src="ptw.js"></script>
+</body>
+</html>
