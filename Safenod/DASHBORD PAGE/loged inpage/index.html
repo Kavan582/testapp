@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safenod – Risk Register Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── BANNER ── -->
+<div class="banner">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </svg>
+  SAFENOD — PLANT RISK REGISTER &amp; SAFETY MANAGEMENT PLATFORM
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </svg>
+</div>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-mark">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+    <h1 class="header-title">
+      <span class="accent">Safenod</span> Dashboard
+      <span class="star-icon" id="starIcon" onclick="toggleStar()" title="Favourite">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </span>
+    </h1>
+  </div>
+  <div class="header-right">
+    <div class="bell-btn" title="Notifications">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      <div class="bell-dot"></div>
+    </div>
+    <div class="avatar-wrapper" id="avatarWrapper">
+      <div class="nav-avatar" id="avatarInitials" onclick="toggleDropdown(event)">SU</div>
+
+      <!-- ── AVATAR DROPDOWN ── -->
+      <div class="avatar-dropdown" id="avatarDropdown">
+
+        <!-- User Info Header -->
+        <div class="dropdown-header">
+          <div class="dropdown-avatar">SU</div>
+          <div class="dropdown-user-info">
+            <div class="dropdown-name">Suresh Kumar</div>
+            <div class="dropdown-role">Safety Officer</div>
+            <div class="dropdown-plant">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              Unit 3 — North Plant
+            </div>
+          </div>
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <!-- Group 1: Profile & Preferences -->
+        <div class="dropdown-group">
+          <div class="dropdown-item" onclick="handleDropdown('profile')">
+            <div class="di-icon di-blue">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="di-content">
+              <div class="di-label">My Profile</div>
+              <div class="di-sub">View your details &amp; activity</div>
+            </div>
+            <div class="di-arrow">›</div>
+          </div>
+
+          <div class="dropdown-item" onclick="handleDropdown('settings')">
+            <div class="di-icon di-slate">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </div>
+            <div class="di-content">
+              <div class="di-label">Settings</div>
+              <div class="di-sub">UI &amp; notification preferences</div>
+            </div>
+            <div class="di-arrow">›</div>
+          </div>
+
+          <div class="dropdown-item" onclick="handleDropdown('password')">
+            <div class="di-icon di-violet">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="di-content">
+              <div class="di-label">Change Password</div>
+              <div class="di-sub">Update your login credentials</div>
+            </div>
+            <div class="di-arrow">›</div>
+          </div>
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <!-- Group 2: Utilities -->
+        <div class="dropdown-group">
+          <div class="dropdown-item" onclick="handleDropdown('notifications')">
+            <div class="di-icon di-amber">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+            </div>
+            <div class="di-content">
+              <div class="di-label">Notifications</div>
+              <div class="di-sub">View alerts &amp; updates</div>
+            </div>
+            <div class="di-badge">3</div>
+          </div>
+
+          <div class="dropdown-item" onclick="handleDropdown('help')">
+            <div class="di-icon di-teal">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div class="di-content">
+              <div class="di-label">Help &amp; Support</div>
+              <div class="di-sub">User guide &amp; contact</div>
+            </div>
+            <div class="di-arrow">›</div>
+          </div>
+
+          <div class="dropdown-item" onclick="handleDropdown('about')">
+            <div class="di-icon di-slate">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
+            <div class="di-content">
+              <div class="di-label">About System</div>
+              <div class="di-sub">v2.4.1 — Safenod Platform</div>
+            </div>
+            <div class="di-arrow">›</div>
+          </div>
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <!-- Logout -->
+        <div class="dropdown-group">
+          <div class="dropdown-item dropdown-item-danger" onclick="handleDropdown('logout')">
+            <div class="di-icon di-red">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+            </div>
+            <div class="di-content">
+              <div class="di-label">Logout</div>
+              <div class="di-sub">Exit your session safely</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TAB TOOLBAR ── -->
+<div class="toolbar">
+  <a class="tab-link active" onclick="setTab(this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Home
+  </a>
+  <a class="tab-link" onclick="setTab(this); openModule('incident')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    Incident Tracker
+  </a>
+  <a class="tab-link" onclick="setTab(this); openModule('capa')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+    </svg>
+    CAPA Tracker
+  </a>
+  <a class="tab-link" onclick="setTab(this); openModule('hd')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    HD Tracker
+  </a>
+  <a class="tab-link" onclick="setTab(this); openModule('hira')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="20" x2="18" y2="10"/>
+      <line x1="12" y1="20" x2="12" y2="4"/>
+      <line x1="6" y1="20" x2="6" y2="14"/>
+    </svg>
+    HIRA
+  </a>
+  <a class="tab-link" onclick="setTab(this); openModule('jsa')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+      <polyline points="10 9 9 9 8 9"/>
+    </svg>
+    JSA
+  </a>
+  <a class="tab-link" onclick="setTab(this); openModule('ptw')">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    PTW
+  </a>
+  <a class="tab-link" onclick="setTab(this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>
+    Reports
+  </a>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- Greeting -->
+  <div class="greeting-section">
+    <div>
+      <div class="greeting-title" id="greetingTitle">Good to see you, <span class="name">Suresh</span></div>
+      <p class="greeting-sub" id="greetingSub">Here's your plant risk overview for today. Stay safe, stay sharp.</p>
+    </div>
+    <div class="greeting-right">
+      <div class="greeting-date" id="todayDate"></div>
+      <div class="greeting-shift" id="shiftTag">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        Morning Shift
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Header -->
+  <div class="section-header">
+    <div>
+      <div class="section-title">Risk Management Modules</div>
+      <div class="section-sub">Select a module to view, track and manage risks across the plant</div>
+    </div>
+  </div>
+
+  <!-- Module Cards -->
+  <div class="module-grid">
+
+    <!-- Incident Tracker -->
+    <div class="module-card card-incident" onclick="openModule('incident')">
+      <div class="module-card-top">
+        <div class="module-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8b00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="module-status badge-open">12 OPEN</div>
+      </div>
+      <div>
+        <div class="module-name">Incident Tracker</div>
+        <div class="module-fullname">Incident Reporting &amp; Investigation</div>
+      </div>
+      <div class="module-desc">Log, track and investigate workplace incidents. Record near-misses, unsafe conditions and injuries with full audit trail and root cause analysis.</div>
+      <div class="module-footer">
+        <div class="module-count"><strong>24</strong> total records</div>
+        <div class="card-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAPA Tracker -->
+    <div class="module-card card-capa" onclick="openModule('capa')">
+      <div class="module-card-top">
+        <div class="module-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00875a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div class="module-status badge-review">8 PENDING</div>
+      </div>
+      <div>
+        <div class="module-name">CAPA Tracker</div>
+        <div class="module-fullname">Corrective &amp; Preventive Action</div>
+      </div>
+      <div class="module-desc">Manage corrective and preventive actions end-to-end. Assign owners, set deadlines and track resolution progress to full closure.</div>
+      <div class="module-footer">
+        <div class="module-count"><strong>41</strong> total records</div>
+        <div class="card-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- HD Tracker -->
+    <div class="module-card card-hd" onclick="openModule('hd')">
+      <div class="module-card-top">
+        <div class="module-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5243aa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="module-status badge-active">ACTIVE</div>
+      </div>
+      <div>
+        <div class="module-name">HD Tracker</div>
+        <div class="module-fullname">Hazard Detection &amp; Management</div>
+      </div>
+      <div class="module-desc">Identify and track hazardous conditions across all plant areas. Monitor detection status and ensure timely mitigation actions are completed.</div>
+      <div class="module-footer">
+        <div class="module-count"><strong>18</strong> total records</div>
+        <div class="card-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- HIRA -->
+    <div class="module-card card-hira" onclick="openModule('hira')">
+      <div class="module-card-top">
+        <div class="module-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0052cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <div class="module-status badge-review">IN REVIEW</div>
+      </div>
+      <div>
+        <div class="module-name">HIRA</div>
+        <div class="module-fullname">Hazard Identification &amp; Risk Assessment</div>
+      </div>
+      <div class="module-desc">Systematically identify hazards and assess risk levels for all plant operations. Build comprehensive risk matrices and define preventive controls.</div>
+      <div class="module-footer">
+        <div class="module-count"><strong>56</strong> assessments</div>
+        <div class="card-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- JSA -->
+    <div class="module-card card-jsa" onclick="openModule('jsa')">
+      <div class="module-card-top">
+        <div class="module-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00b8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+        <div class="module-status badge-active">ACTIVE</div>
+      </div>
+      <div>
+        <div class="module-name">JSA</div>
+        <div class="module-fullname">Job Safety Analysis</div>
+      </div>
+      <div class="module-desc">Break down job tasks and analyse hazards step-by-step. Ensure every worker understands risks before starting high-risk work activities at the plant.</div>
+      <div class="module-footer">
+        <div class="module-count"><strong>29</strong> job analyses</div>
+        <div class="card-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- PTW -->
+    <div class="module-card card-ptw" onclick="openModule('ptw')">
+      <div class="module-card-top">
+        <div class="module-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#de350b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <div class="module-status badge-live">5 LIVE</div>
+      </div>
+      <div>
+        <div class="module-name">PTW</div>
+        <div class="module-fullname">Permit to Work System</div>
+      </div>
+      <div class="module-desc">Issue, approve and monitor work permits for high-risk activities. Control access to hazardous zones with digital permit workflows and approvals.</div>
+      <div class="module-footer">
+        <div class="module-count"><strong>13</strong> this week</div>
+        <div class="card-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

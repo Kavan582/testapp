@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeNode – Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="login.css"/>
+</head>
+<body>
+
+  <!-- ── LEFT PANEL ── -->
+  <div class="left-panel">
+
+    <!-- Logo -->
+    <div class="logo-area">
+      <div class="logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+      </div>
+      <span class="logo-name">Safe<span>Nod</span></span>
+    </div>
+
+    <!-- Form -->
+    <div class="form-area">
+      <h1 class="welcome-heading">Welcome Back <span class="wave">👋</span></h1>
+      <p class="welcome-sub">Today is a new day. It's your day. You shape it.<br>Sign in to start managing your projects.</p>
+
+      <div class="field-group">
+
+        <!-- Email -->
+        <div>
+          <label class="field-label" for="email">Email</label>
+          <div class="field-wrap">
+            <span class="field-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </span>
+            <input class="field-input" id="email" type="email" placeholder="Example@email.com" autocomplete="email"/>
+          </div>
+          <span class="error-msg" id="emailError">Please enter a valid email address.</span>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <div class="field-row">
+            <label class="field-label" for="password">Password</label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+          <div class="field-wrap">
+            <span class="field-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </span>
+            <input class="field-input" id="password" type="password" placeholder="At least 8 characters" autocomplete="current-password"/>
+            <button class="eye-toggle" id="eyeToggle" type="button" onclick="toggleEye()">
+              <svg id="eyeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="error-msg" id="passError">Password must be at least 8 characters.</span>
+        </div>
+
+      </div>
+
+      <button class="signin-btn" id="signinBtn" onclick="handleSignIn()">
+        <span class="btn-text">Sign in</span>
+        <div class="spinner"></div>
+      </button>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">Or</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="social-btns">
+        <button class="social-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Sign in with Google
+        </button>
+
+        <button class="social-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          Sign in with Facebook
+        </button>
+      </div>
+
+      <p class="signup-link">Don't you have an account? <a href="#">Sign up</a></p>
+    </div>
+
+    <div class="left-footer">© 2025 ALL RIGHTS RESERVED — SAFENNODE</div>
+  </div>
+
+  <!-- ── RIGHT PANEL ── -->
+  <div class="right-panel">
+    <div class="grid-bg"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="central-visual">
+
+      <!-- Shield with rings -->
+      <div class="shield-wrap">
+        <div class="shield-ring ring1"></div>
+        <div class="shield-ring ring2"></div>
+        <div class="shield-ring ring3"></div>
+
+        <!-- Floating module badges -->
+        <div class="float-badge badge-incident">
+          <div class="badge-dot" style="background:#ff8b00;"></div>
+          <span class="badge-label">Incident</span>
+          <span class="badge-count" style="color:#ff8b00;">04</span>
+        </div>
+        <div class="float-badge badge-capa">
+          <div class="badge-dot" style="background:#00875a;"></div>
+          <span class="badge-label">CAPA</span>
+          <span class="badge-count" style="color:#00875a;">12</span>
+        </div>
+        <div class="float-badge badge-hira">
+          <div class="badge-dot" style="background:#4c9aff;"></div>
+          <span class="badge-label">HIRA</span>
+          <span class="badge-count" style="color:#4c9aff;">07</span>
+        </div>
+        <div class="float-badge badge-ptw">
+          <div class="badge-dot" style="background:#de350b;"></div>
+          <span class="badge-label">PTW</span>
+          <span class="badge-count" style="color:#de350b;">03</span>
+        </div>
+
+        <!-- Main shield SVG -->
+        <svg class="main-shield" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="shieldGrad" x1="0" y1="0" x2="120" y2="140" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1e5fb3"/>
+              <stop offset="100%" stop-color="#0a2e5c"/>
+            </linearGradient>
+            <linearGradient id="shieldStroke" x1="0" y1="0" x2="120" y2="140" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#4c9aff"/>
+              <stop offset="100%" stop-color="#0052cc"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Shield body -->
+          <path d="M60 4L8 26V68C8 96 32 120 60 132C88 120 112 96 112 68V26L60 4Z"
+            fill="url(#shieldGrad)"
+            stroke="url(#shieldStroke)" stroke-width="2"
+            filter="url(#glow)"/>
+          <!-- Inner shield lighter -->
+          <path d="M60 18L20 36V68C20 90 38 110 60 120C82 110 100 90 100 68V36L60 18Z"
+            fill="rgba(76,154,255,0.08)"
+            stroke="rgba(76,154,255,0.25)" stroke-width="1"/>
+          <!-- Checkmark -->
+          <polyline points="38,68 52,82 82,52"
+            stroke="#4c9aff" stroke-width="6"
+            stroke-linecap="round" stroke-linejoin="round"
+            filter="url(#glow)"/>
+          <!-- Decorative dots -->
+          <circle cx="60" cy="28" r="2" fill="rgba(76,154,255,0.5)"/>
+          <circle cx="28" cy="60" r="1.5" fill="rgba(76,154,255,0.3)"/>
+          <circle cx="92" cy="60" r="1.5" fill="rgba(76,154,255,0.3)"/>
+        </svg>
+      </div>
+
+      <!-- Info block -->
+      <div class="info-block">
+        <h2 class="info-title">Plant Risk <span>Command Center</span></h2>
+        <p class="info-sub">Manage incidents, track CAPA actions, control PTW permits, and assess HIRA hazards — all in one unified platform.</p>
+      </div>
+
+      <!-- Module pills -->
+      <div class="module-pills">
+        <span class="pill active-pill">Incident</span>
+        <span class="pill active-pill">CAPA</span>
+        <span class="pill">HD Tracker</span>
+        <span class="pill active-pill">HIRA</span>
+        <span class="pill">JSA</span>
+        <span class="pill">PTW</span>
+      </div>
+
+    </div>
+
+    <div class="right-footer">© 2025 SAFENNODE — ALL RIGHTS RESERVED</div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
